@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+  <sender>Patrick</sender>
+  <receiver>Adam</receiver>
+  <title>Tu jest załącznik</title>
+  <datetime>15.02.2015 01:49:32</datetime>
+  <received_date>15.02.2015 01:49:32</received_date>
+  <mail_txt>1234567890-=!@#$%^&amp;*()_+</mail_txt>
+  <attachment>
+    <att_title>Tekst.txt</att_title>
+    <att_length>0.0</att_length>
+  </attachment>
+</mail>

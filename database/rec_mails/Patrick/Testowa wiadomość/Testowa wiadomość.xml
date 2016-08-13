@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+  <sender>Adam</sender>
+  <receiver>Patrick</receiver>
+  <title>Testowa wiadomość</title>
+  <datetime>14.02.2015 23:43:52</datetime>
+  <received_date>15.02.2015 01:18:59</received_date>
+  <mail_txt>gdfhdfh</mail_txt>
+</mail>

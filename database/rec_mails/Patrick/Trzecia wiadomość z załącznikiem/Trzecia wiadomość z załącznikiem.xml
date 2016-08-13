@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+  <sender>Adam</sender>
+  <receiver>Patrick</receiver>
+  <title>Trzecia wiadomość z załącznikiem</title>
+  <datetime>15.02.2015 01:59:39</datetime>
+  <received_date>15.02.2015 01:59:39</received_date>
+  <mail_txt>Zażółć gęślą jaźń</mail_txt>
+  <attachment>
+    <att_title>Tekst.txt</att_title>
+    <att_length>0.0</att_length>
+  </attachment>
+</mail>
