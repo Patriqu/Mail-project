@@ -25,17 +25,17 @@ import javax.swing.KeyStroke;
  */
 public class WriteMailDialog extends javax.swing.JDialog {
 
-    private Map<String, Object> mailData;
+	// A return status code - returned if Cancel button has been pressed
+    public static final int RET_CANCEL = 0;
+    // A return status code - returned if OK button has been pressed
+    public static final int RET_OK = 1;
     
     private String user;
     private String receiver = "";
     private String title = "";
     private String text = "";
     
-    // A return status code - returned if Cancel button has been pressed
-    public static final int RET_CANCEL = 0;
-    // A return status code - returned if OK button has been pressed
-    public static final int RET_OK = 1;
+    private Map<String, Object> mailData;
     
     private DefaultListModel defaultListModel = new DefaultListModel();
     private List attachments = new ArrayList<>();
@@ -61,32 +61,31 @@ public class WriteMailDialog extends javax.swing.JDialog {
         });
     }
     
-    
-
    public String getReceiver()
     {
         return this.receiver;
     }
    
-   public String getTitleField()
+   public String getMsgTitle()
     {
         return this.title;
     }
    
-   public String getTextField()
+   public String getMsgText()
     {
         return this.text;
     }
     
-    
-
-    /**
-     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
-     */
+    // return the return status of this dialog - one of RET_OK or RET_CANCEL
     public int getReturnStatus() {
         return returnStatus;
     }
 
+    public Map getMailData()
+    {
+        return mailData;
+    }
+    
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -125,7 +124,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
         jButtonCancel.setText("Anuluj");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                jButtonCancelActionPerformed(evt);
             }
         });
 
@@ -322,11 +321,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
         pack();
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        doClose(RET_CANCEL);
-    }
-
-    private void closeDialog(java.awt.event.WindowEvent evt) {
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
         doClose(RET_CANCEL);
     }
 
@@ -384,17 +379,16 @@ public class WriteMailDialog extends javax.swing.JDialog {
         }
     }
     
+    private void closeDialog(java.awt.event.WindowEvent evt) {
+        doClose(RET_CANCEL);
+    }
+    
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
     
-    public Map getMailData()
-    {
-        return mailData;
-    }
-
 
     public static void main(String args[]) {
         try {

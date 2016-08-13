@@ -46,21 +46,16 @@ import org.jdom2.input.SAXBuilder;
  */
 public class ReadMailDialog extends javax.swing.JDialog {
 
+	// A return status code - returned if Cancel button has been pressed
+    public static final int RET_CANCEL = 0;
+    // A return status code - returned if OK button has been pressed
+    public static final int RET_OK = 1;
+	
     private String sender = "";
     private String receiver = "";
     private String title = "";
     private String date = "";
     private String mailTxt = "";
-    
-    
-    /**
-     * A return status code - returned if Cancel button has been pressed
-     */
-    public static final int RET_CANCEL = 0;
-    /**
-     * A return status code - returned if OK button has been pressed
-     */
-    public static final int RET_OK = 1;
     
     private String user;
     private String type;
@@ -90,7 +85,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         if (this.type.equals("sent"))
             jLabelDate.setText("Data wysłania:");
         
-        // Close the dialog when Esc is pressed
+        // Close the dialog when Esc key is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -174,10 +169,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         }
     }
     
-   
-    /**
-     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
-     */
+    // return the return status of this dialog - one of RET_OK or RET_CANCEL
     public int getReturnStatus() {
         return returnStatus;
     }
@@ -186,7 +178,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButtonCancel = new javax.swing.JButton();
-        jPanelMsgText = new javax.swing.JPanel();
+        jPanelMsgContent = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaText = new javax.swing.JTextArea();
         jPanelTop = new javax.swing.JPanel();
@@ -209,7 +201,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jButtonDelete = new javax.swing.JButton();
         jLabelDate = new javax.swing.JLabel();
         jLabelDateValue = new javax.swing.JLabel();
-        jLabelMsgContent = new javax.swing.JLabel();
+        jLabelMsgText = new javax.swing.JLabel();
         jButtonSendFurther = new javax.swing.JButton();
         jButtonAnswer = new javax.swing.JButton();
 
@@ -226,7 +218,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jButtonCancel.setText("Anuluj");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                jButtonCancelActionPerformed(evt);
             }
         });
 
@@ -235,15 +227,15 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jTextAreaText);
         jTextAreaText.setDisabledTextColor(Color.BLACK);
 
-        javax.swing.GroupLayout gl_jPanelMsgText = new javax.swing.GroupLayout(jPanelMsgText);
-        jPanelMsgText.setLayout(gl_jPanelMsgText);
-        gl_jPanelMsgText.setHorizontalGroup(
-            gl_jPanelMsgText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelMsgContent = new javax.swing.GroupLayout(jPanelMsgContent);
+        jPanelMsgContent.setLayout(gl_jPanelMsgContent);
+        gl_jPanelMsgContent.setHorizontalGroup(
+            gl_jPanelMsgContent.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
         );
-        gl_jPanelMsgText.setVerticalGroup(
-            gl_jPanelMsgText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gl_jPanelMsgText.createSequentialGroup()
+        gl_jPanelMsgContent.setVerticalGroup(
+            gl_jPanelMsgContent.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_jPanelMsgContent.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -375,7 +367,6 @@ public class ReadMailDialog extends javax.swing.JDialog {
             );
 
             jLabelTitle.setText("Tytuł wiadomości:");
-
             jLabelReceiver.setText("Odbiorca wiadomości:");
 
             jScrollPane3.setViewportView(jTextFieldReceiver);
@@ -402,7 +393,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
             });
 
             jLabelDate.setText("Data odebrania:");
-            jLabelMsgContent.setText("Treść wiadomości:");
+            jLabelMsgText.setText("Treść wiadomości:");
             jButtonSendFurther.setText("Prześlij dalej");
             jButtonAnswer.setText("Odpowiedz");
 
@@ -441,8 +432,8 @@ public class ReadMailDialog extends javax.swing.JDialog {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabelMsgContent)
-                        .addComponent(jPanelMsgText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabelMsgText)
+                        .addComponent(jPanelMsgContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(22, 22, 22))
                 .addGroup(layout.createSequentialGroup()
                     .addGap(79, 79, 79)
@@ -486,9 +477,9 @@ public class ReadMailDialog extends javax.swing.JDialog {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanelAttachments, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabelMsgContent)
+                    .addComponent(jLabelMsgText)
                     .addGap(3, 3, 3)
-                    .addComponent(jPanelMsgText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelMsgContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonCancel)
@@ -506,11 +497,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
             pack();
         }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        doClose(RET_CANCEL);
-    }
-
-    private void closeDialog(java.awt.event.WindowEvent evt) {
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
         doClose(RET_CANCEL);
     }
 
@@ -599,6 +586,10 @@ public class ReadMailDialog extends javax.swing.JDialog {
         }
     }
     
+    private void closeDialog(java.awt.event.WindowEvent evt) {
+        doClose(RET_CANCEL);
+    }
+    
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -669,14 +660,14 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonSendFurther;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelMsgContent;
+    private javax.swing.JLabel jLabelMsgText;
     private javax.swing.JLabel jLabelDate;
     private javax.swing.JLabel jLabelDateValue;
     private javax.swing.JLabel jLabelReceiver;
     private javax.swing.JLabel jLabelSender;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JList jListAtts;
-    private javax.swing.JPanel jPanelMsgText;
+    private javax.swing.JPanel jPanelMsgContent;
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JPanel jPanelMsgTitle;
     private javax.swing.JPanel jPanelAttachments;

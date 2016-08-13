@@ -26,14 +26,10 @@ public class SettingsDialog extends javax.swing.JDialog {
     private String defaultServerPort, defaultServerIP, windowStyle,
             textSize, mailsDirectory;
     
-    /**
-     * Creates new form SettingsDialog
-     * @param parent
-     * @param modal
-     */
+    
     public SettingsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        System.out.println("Jestem w konstruktorze SettingsDialog");
+        System.out.println("SettingsDialog initialized");
         initComponents();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -136,8 +132,7 @@ public class SettingsDialog extends javax.swing.JDialog {
     
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem = new javax.swing.JMenuItem();
         jPanelMain = new javax.swing.JPanel();
         jLabelDefaultServerPort = new javax.swing.JLabel();
         jLabelDefaultServerIP = new javax.swing.JLabel();
@@ -153,7 +148,7 @@ public class SettingsDialog extends javax.swing.JDialog {
         jTextFieldTextSize = new javax.swing.JTextField();
         jComboBoxWindowStyle = new javax.swing.JComboBox();
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -299,7 +294,7 @@ public class SettingsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelWindowLayout;
     private javax.swing.JLabel jLabelFontSize;
     private javax.swing.JLabel jLabelMailsFolder;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JSeparator jSeparator;
     private javax.swing.JTextField jTextFieldDefaultServerIP;

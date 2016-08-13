@@ -32,7 +32,6 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
     
     /** A return status code - returned if Cancel button has been pressed */
     public static String RET_CANCEL = "0";
-    
     /** A return status code - returned if OK button has been pressed */
     public static String RET_OK = "";
     
@@ -55,7 +54,7 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         toFront();
         setTitle("Logowanie");
 
-        // Close the dialog when Esc is pressed
+        // Close the dialog when Esc key is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -69,9 +68,6 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         });
     }
 
-    /**
-     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
-     */
     public String getReturnStatus() {
         return returnStatus;
     }
@@ -79,7 +75,6 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
     public void setWarning(String warn) {
         jLabelWarning.setText(warn);
     }
-
 
     private void initComponents() {
         jButtonOk = new javax.swing.JButton();
@@ -104,19 +99,19 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         jButtonOk.setText("Zaloguj");
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+                buttonOkActionPerformed(evt);
             }
         });
 
         jButtonCancel.setText("Anuluj");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                buttonCancelActionPerformed(evt);
             }
         });
 
         jLabelLogin.setText("Login:");
-        jLabelInfo.setText("Podaj login, hasło, IP serwera oraz port");
+        jLabelInfo.setText("Podaj login, hasło, IP serwera oraz port.");
         jLabelPassword.setText("Hasło:");
         jLabelServerPort.setText("Port serwera:");
 
@@ -138,9 +133,7 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         } catch (JDOMException | IOException e) {
         }
         jTextFieldServerPort.setText(defaultPort);
-
         jLabelServerIP.setText("IP serwera:");
-
         jTextFieldServerIP.setText(defaultIP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,7 +211,7 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         pack();
     }
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void buttonOkActionPerformed(java.awt.event.ActionEvent evt) {
         String login = jTextFieldLogin.getText();
         String password = jTextFieldPassword.getText();
         
@@ -233,32 +226,26 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         RET_OK = "";
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        returnStatus = "RET_CANCEL";
-        
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {
+        returnStatus = "RET_CANCEL";        
         doClose(RET_CANCEL);
     }
 
-    
     private void closeDialog(java.awt.event.WindowEvent evt) {
         returnStatus = "RET_CANCEL";
-        
         doClose(RET_CANCEL);
     }
     
     // ustawienie zwracanej wartości po zamknięciu okna logowania
     private void returnValue(String retStatus) {
         returnStatus = retStatus;
-        
         setVisible(false);
     }
     
-    // zamknięcie okna dialogowego logowania
     public void doClose(String retStatus)
     {
         setVisible(false);
     }
-    
     
     public void showLoginDialog()
     {

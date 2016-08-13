@@ -58,7 +58,7 @@ public class FileSaver extends javax.swing.JDialog {
 
         jFileChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFileChooser1ActionPerformed(evt);
+                jFileChooserActionPerformed(evt);
             }
         });
 
@@ -80,7 +80,7 @@ public class FileSaver extends javax.swing.JDialog {
         pack();
     }
 
-    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jFileChooserActionPerformed(java.awt.event.ActionEvent evt) {
         if (evt.getActionCommand().equals("ApproveSelection"))
         {
             String copyPath = jFileChooser.getSelectedFile().getAbsolutePath();

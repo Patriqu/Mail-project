@@ -12,7 +12,7 @@ public class InfoDialog extends javax.swing.JDialog {
 
     public InfoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        System.out.println("Jestem w konstruktorze InfoDialog");
+        System.out.println("InfoDialog initialized");
         initComponents();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -88,12 +88,9 @@ public class InfoDialog extends javax.swing.JDialog {
 
 
     public static void main(String[] args) {
-        System.out.println("Jestem w main");
-        
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Jestem na końcu run() w InfoDialog");
             }
         });
     }
