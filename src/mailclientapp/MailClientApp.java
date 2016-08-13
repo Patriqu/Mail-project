@@ -62,60 +62,57 @@ public class MailClientApp extends javax.swing.JFrame {
     
     private static final long serialVersionUID = 1L;
     
-    ////////////////////
-    // obiekty i flagi
-    ////////////////////
+    ///////////////////////
+    // OBJECTS AND FLAGS //
+    ///////////////////////
     
-    // informacje
+    // informations
     private int port;
     private static String user = "";
     
-    // gniazdo klienta
+    // client socket
     private Socket clientSocket;
     
-    // obiekt naszego protokołu mailowego
+    // object of our mail protocol
     private static MailProtocol mailProtocol;
     
-    // obiekt okna logowania
+    // object of the login window
     private static LoginDialog loginDialog;
-    private InfoDialog /*NewJDialog*/ infoDialog;
+    private InfoDialog infoDialog;
     private SettingsDialog settingsDialog;
     
-    // bufory wejścia i wyjścia    
+    // input/output buffors    
     private static BufferedInputStream reader;
-    private static ObjectInputStream obReader;
+    private static ObjectInputStream objectReader;
     
     private static BufferedOutputStream writer;
-    private static ObjectOutputStream obWriter;
+    private static ObjectOutputStream objectWriter;
     
-    // obiekt ramki wiadomości mail
-    private static Map<String, Object> mail_frame = new HashMap<>();
+    // object of the mail's message frame
+    private static Map<String, Object> mailFrame = new HashMap<>();
     
-    // obiekty list maili itp.
-    private List<Object> list = new ArrayList<>();                  // lista obiektów
+    // objects of the mail lists ect.
+    private List<Object> mailsList = new ArrayList<>();
     
-    private DefaultListModel recModel = new DefaultListModel();        // zbiór rekordów w graficznej liście maili
+    private DefaultListModel recModel = new DefaultListModel();        // records collection in the GUI mails list
     private DefaultListModel sentModel = new DefaultListModel();
     private DefaultListModel trashModel = new DefaultListModel();
     
-    ListSelectionModel listSelectionModel;                          // rodzaj modelu powyższego
+    ListSelectionModel listSelectionModel;
     ListSelectionModel sentListSelectionModel;
     ListSelectionModel trashListSelectionModel;
     
     boolean notConnected;
     private String m_listType;
     
-    /**
-     * Creates new form MailClientUI
-     */
+    
     public MailClientApp() { 
         setTitle("Klient poczty E-mail");
         
-        // tworzę obiekt biblioteki z implementacją mojego protokołu aplikacji
         mailProtocol = new MailProtocol();
         
-        list.add(0, null);
-        list.add(1, null);
+        mailsList.add(0, null);
+        mailsList.add(1, null);
 
         initComponents();
         m_listType = "rec";
@@ -133,12 +130,12 @@ public class MailClientApp extends javax.swing.JFrame {
     }
 
     
-    // KLASA DO LISTY MAILI:
+    // CLASS TO CREATING MAILS LISTS:
     class MyCellRenderer extends JPanel implements ListCellRenderer { 
         private static final long serialVersionUID = 1L;
         JCheckBox checkbox;
         JLabel left, middle, right;
-        JSeparator sep_1, sep_2;
+        JSeparator sep1, sep2;
 
         MyCellRenderer() {
             GridBagLayout grid = new GridBagLayout();
@@ -151,41 +148,24 @@ public class MailClientApp extends javax.swing.JFrame {
             middle = new JLabel();
             right = new JLabel();
             
-            sep_1 = new JSeparator();
-            sep_2 = new JSeparator();
-            sep_1.setOrientation(SwingConstants.VERTICAL);
-            sep_2.setOrientation(SwingConstants.VERTICAL);
-            
-            //left.setOpaque(true);
-            //middle.setOpaque(true);
-            //right.setOpaque(true);
+            sep1 = new JSeparator();
+            sep2 = new JSeparator();
+            sep1.setOrientation(SwingConstants.VERTICAL);
+            sep2.setOrientation(SwingConstants.VERTICAL);
             
             Dimension cb_min = new Dimension();
-            cb_min.setSize(100 /*420*/ /*295*/, 20);       //320
+            cb_min.setSize(100, 20);
             
             Dimension cb_max = new Dimension();
-            cb_max.setSize(100 /*420*/ /*295*/, 20);
+            cb_max.setSize(100, 20);
             
             
             
             Dimension l_min = new Dimension();
-            l_min.setSize(600 /*420*/ /*295*/, 20);       //320
+            l_min.setSize(600, 20);
             
             Dimension l_max = new Dimension();
-            l_max.setSize(600 /*420*/ /*295*/, 20);
-            
-            //Dimension m_min = new Dimension();
-            //m_min.setSize(50 /*295*/, 20);
-            
-            //Dimension m_max = new Dimension();
-            //m_max.setSize(50 /*295*/, 20);
-            
-            //Dimension r_min = new Dimension();
-            //r_min.setSize(5, 20);
-            
-            //Dimension r_max = new Dimension();
-            //r_max.setSize(5, 20);
-            
+            l_max.setSize(600, 20);
             
             checkbox.setMinimumSize(cb_min);
             checkbox.setMaximumSize(cb_max);
@@ -194,45 +174,26 @@ public class MailClientApp extends javax.swing.JFrame {
             left.setMinimumSize(l_min);
             left.setMaximumSize(l_max);
             
-            //middle.setMinimumSize(m_min);
-            //middle.setMaximumSize(m_max);
-            
-            //right.setMinimumSize(r_min);
-            //right.setMaximumSize(r_max);
-            //right.setLocation(400, 0);
-            //right.setBounds(50, 0, 100, 20);
-            //right.setHorizontalAlignment(SwingConstants.LEFT);
-            
             middle.setHorizontalAlignment(SwingConstants.RIGHT);
-            // middle.setHorizontalTextPosition(SwingConstants.CENTER);
             
             right.setHorizontalAlignment(SwingConstants.RIGHT);
             
-            //c.insets = new Insets(2,2,2,2);
-            c.anchor = GridBagConstraints.LINE_START /*NORTHEAST*/;
-            c.fill = GridBagConstraints./*NONE*/BOTH;
+            c.anchor = GridBagConstraints.LINE_START;
+            c.fill = GridBagConstraints.BOTH;
             
-            //c.anchor = GridBagConstraints.LINE_START /*RELATIVE*//*NONE*/; // GridBagConstraints.WEST;
-            //c.gridheight = 1; //1000;
-            //c.gridwidth = 1; //2;
-            //c.ipadx = 220; //220;
-            
-            //c.insets = new Insets(0, 0, 0, 100);
-            
-            //c.gridwidth = 60;
             add(checkbox, c);
             
             c.insets = new Insets(0, 272, 0, 20);
-            add(sep_1, c);
+            add(sep1, c);
             c.insets = new Insets(0, 90, 0, 20);
-            add(sep_2, c);
+            add(sep2, c);
             
             c.insets = new Insets(0, 22, 0, 140);
             
             c.ipadx = 0;
             c.weightx = 1.0;
             c.weighty = 1.0;
-            c.ipadx = 20 /*200*/;
+            c.ipadx = 20;
             
             c.gridx = 0;
             c.gridy = 0;
@@ -246,7 +207,6 @@ public class MailClientApp extends javax.swing.JFrame {
             c.ipadx = 0;
             c.gridx = 1;
             c.gridy = 0;
-            //c.weightx = 150;
             add(middle, c);
             
             c.fill = GridBagConstraints.BOTH;
@@ -293,32 +253,26 @@ public class MailClientApp extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        jMainPanel = new javax.swing.JPanel();
+        jLeftPanel = new javax.swing.JPanel();
         jButtonWriteMail = new javax.swing.JButton();
         jLabelWelcome = new javax.swing.JLabel();
         jButtonRecMails = new javax.swing.JButton();
         jButtonTrashMails = new javax.swing.JButton();
         jButtonSendMails = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane = new javax.swing.JScrollPane();
         jListMails = new javax.swing.JList();
         jLabelMsgTitle = new javax.swing.JLabel();
         jLabelMsgDate = new javax.swing.JLabel();
         jLabelMsgSender = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jButtonAddToTrash = new javax.swing.JButton();
+        jButtonDeleteMsg = new javax.swing.JButton();
+        jButtonSetAsRead = new javax.swing.JButton();
+        jMenuBar = new javax.swing.JMenuBar();
         jMenuWriteMail = new javax.swing.JMenu();
         jMenuItemRec = new javax.swing.JMenuItem();
         jMenuItemSentMails = new javax.swing.JMenuItem();
@@ -376,13 +330,13 @@ public class MailClientApp extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout gl_jLeftPanel = new javax.swing.GroupLayout(jLeftPanel);
+        jLeftPanel.setLayout(gl_jLeftPanel);
+        gl_jLeftPanel.setHorizontalGroup(
+            gl_jLeftPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_jLeftPanel.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(gl_jLeftPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonWriteMail, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                     .addComponent(jLabelWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonRecMails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -391,9 +345,9 @@ public class MailClientApp extends javax.swing.JFrame {
                     .addComponent(jButtonLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        gl_jLeftPanel.setVerticalGroup(
+            gl_jLeftPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_jLeftPanel.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -411,8 +365,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
         jListMails.setModel(recModel);
         jListMails.setCellRenderer(new MyCellRenderer());
-        jScrollPane1.setViewportView(jListMails);
-        //jListMails.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        jScrollPane.setViewportView(jListMails);
 
         jListMails.setFixedCellWidth(445);
 
@@ -446,32 +399,26 @@ public class MailClientApp extends javax.swing.JFrame {
                                 String x = ( (String[])jListMails.getSelectedValue() )[2];
                                 System.out.println("Component name: " + x);
 
-                                // jListMails.clearSelection();
-
                                 JFrame jframe = (JFrame) SwingUtilities.getRoot(jListMails);
 
-                                final MailReadDialog readMailDialog;
+                                final ReadMailDialog readMailDialog;
                                 try {
-                                    readMailDialog = new MailReadDialog(jframe, true, i, x, user, m_listType);
+                                    readMailDialog = new ReadMailDialog(jframe, true, i, x, user, m_listType);
 
                                     readMailDialog.addWindowListener(new WindowAdapter() {
                                         @Override
                                         public void windowClosed(WindowEvent e) {
-                                            /*String*/ int name = readMailDialog.getDeletedMailName();
+                                            int name = readMailDialog.getDeletedMailIndex();
 
-                                            if (name != -1 /*!name.equals("")*/)
+                                            if (name != -1)
                                             {
                                                 System.out.println("Usuwanie z listy odebranych maila: " + name);
 
                                                 String temp[] = (String[]) recModel.elementAt(name);
                                                 System.out.println("Folder do usunięcia: " + temp[2]);
 
-                                                recModel.removeElementAt(name);  /*jListMails.getSelectedIndex()*/ /*name*/
-
-                                                //removeMail(temp[2]);
+                                                recModel.removeElementAt(name);
                                             }
-
-                                            //jListMails.clearSelection();
                                         }
                                     });
 
@@ -488,37 +435,32 @@ public class MailClientApp extends javax.swing.JFrame {
             });
 
             jLabelMsgTitle.setText("Tytuł Wiadomości");
-
             jLabelMsgDate.setText("Data Odebrania");
-
             jLabelMsgSender.setText("Nadawca");
+            jButtonAddToTrash.setText("Dodaj do kosza");
+            jButtonDeleteMsg.setText("Usuń wiadomości");
+            jButtonSetAsRead.setText("Oznacz jako przeczytane");
 
-            jButton1.setText("Dodaj do kosza");
-
-            jButton2.setText("Usuń wiadomości");
-
-            jButton3.setText("Oznacz jako przeczytane");
-
-            javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-            jPanel1.setLayout(jPanel1Layout);
-            jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
+            javax.swing.GroupLayout gl_jMainPanel = new javax.swing.GroupLayout(jMainPanel);
+            jMainPanel.setLayout(gl_jMainPanel);
+            gl_jMainPanel.setHorizontalGroup(
+                gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gl_jMainPanel.createSequentialGroup()
+                    .addComponent(jLeftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(gl_jMainPanel.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(gl_jMainPanel.createSequentialGroup()
                                     .addGap(19, 19, 19)
-                                    .addComponent(jButton1)
+                                    .addComponent(jButtonAddToTrash)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jButton2)
+                                    .addComponent(jButtonDeleteMsg)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jButton3)
+                                    .addComponent(jButtonSetAsRead)
                                     .addGap(0, 0, Short.MAX_VALUE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)))
+                        .addGroup(gl_jMainPanel.createSequentialGroup()
                             .addGap(28, 28, 28)
                             .addComponent(jLabelMsgTitle)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -527,26 +469,26 @@ public class MailClientApp extends javax.swing.JFrame {
                             .addComponent(jLabelMsgDate)
                             .addGap(22, 22, 22))))
             );
-            jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
+            gl_jMainPanel.setVerticalGroup(
+                gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(gl_jMainPanel.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(gl_jMainPanel.createSequentialGroup()
                             .addGap(0, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLeftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl_jMainPanel.createSequentialGroup()
+                            .addGroup(gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabelMsgTitle)
                                 .addComponent(jLabelMsgDate)
                                 .addComponent(jLabelMsgSender))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton1)
-                                .addComponent(jButton2)
-                                .addComponent(jButton3))
+                            .addGroup(gl_jMainPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButtonAddToTrash)
+                                .addComponent(jButtonDeleteMsg)
+                                .addComponent(jButtonSetAsRead))
                             .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap())
             );
@@ -622,9 +564,9 @@ public class MailClientApp extends javax.swing.JFrame {
             });
             jMenuWriteMail.add(jMenuItemLogout);
 
-            jMenuBar1.add(jMenuWriteMail);
+            jMenuBar.add(jMenuWriteMail);
 
-            setJMenuBar(jMenuBar1);
+            setJMenuBar(jMenuBar);
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -632,31 +574,32 @@ public class MailClientApp extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 10, Short.MAX_VALUE))
             );
 
             pack();
-        }// </editor-fold>//GEN-END:initComponents
+        }
 
     private void removeMail(String name)
     {
-        String path = "database/rec_mails/" + user + "/" + name;
-        System.out.println("Mail to remove: " + path);
+    	String basePath = "database/rec_mails/";
+        String fullPath = basePath + user + "/" + name;
+        System.out.println("Mail to remove: " + fullPath);
         
-        // usuwanie plików i folderu z mailem
-        File dir = new File(path);
+        // deleting files and directory with the concrete mail
+        File dir = new File(fullPath);
         String files[] = dir.list();
         
         for (String one : files)
         {
-            File file = new File("database/rec_mails/" + user + "/" + name + "/" + one);
+            File file = new File(basePath + user + "/" + name + "/" + one);
             
             System.out.println("One: " + one);
             file.delete();
@@ -666,7 +609,7 @@ public class MailClientApp extends javax.swing.JFrame {
     
     void writeMail()
     {
-        final MailWriteDialog writeMail = new MailWriteDialog(this, true, user);
+        final WriteMailDialog writeMail = new WriteMailDialog(this, true, user);
         
         writeMail.addWindowListener(new WindowAdapter() {
             @Override
@@ -677,7 +620,7 @@ public class MailClientApp extends javax.swing.JFrame {
                     System.out.println("Zamknięcie okna pisania wiadomości.");
                 }
                 else {
-                    //// ZŁOŻENIE RAMKI WIADOMOŚCI DO WYSŁANIA DO KLIENTA DOCELOWEGO
+                    //// COMPOSING MAIL FRAME TO BE SENT TO RECEIVER CLIENT
                     
                     Map<String, Object> data;
                     data = writeMail.getMailData();
@@ -686,17 +629,17 @@ public class MailClientApp extends javax.swing.JFrame {
                     SimpleDateFormat ft = new SimpleDateFormat ("dd.MM.yyyy HH:mm:ss");
                     data.put("datetime", ft.format(dNow));
                     try {
-                        mail_frame = mailProtocol.generateMail(data);
+                        mailFrame = mailProtocol.generateMail(data);
                     } catch (IOException ex) {
                         Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     String comm = mailProtocol.getCommand("request", "send mail");
                     try {
-                        list.set(0, comm);
-                        list.set(1, null);
+                        mailsList.set(0, comm);
+                        mailsList.set(1, null);
                         
-                        System.out.println("Lista: element 0: " + list.get(0));
-                        System.out.println("Lista: element 1: " + list.get(1));
+                        System.out.println("Lista: element 0: " + mailsList.get(0));
+                        System.out.println("Lista: element 1: " + mailsList.get(1));
                         
                         sendCommand();
                     } catch (IOException ex) {
@@ -716,8 +659,6 @@ public class MailClientApp extends javax.swing.JFrame {
                     tmp_table[3] = data.get("receiver").toString();
                     
                     sentModel.add(0, tmp_table);
-                    
-                    //addMailToSentList(data.get("title").toString());
                 }
             }
         });
@@ -726,50 +667,49 @@ public class MailClientApp extends javax.swing.JFrame {
     }
     
     
-    private void jButtonWriteMailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonWriteMailMouseClicked
-        // TODO add your handling code here:
+    private void jButtonWriteMailMouseClicked(java.awt.event.MouseEvent evt) {
         writeMail();
-    }//GEN-LAST:event_jButtonWriteMailMouseClicked
+    }
 
-    private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
+    private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             // wysłanie rozkazu "BYE" do serwera
-            list.set(0, "BYE");
-            list.set(1, null);
+            mailsList.set(0, "BYE");
+            mailsList.set(1, null);
             
             sendCommand();
         } catch (IOException ex) {
             Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItemLogoutActionPerformed
+    }
 
-    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {
         jMenuItemLogoutActionPerformed(evt);
-    }//GEN-LAST:event_jButtonLogoutActionPerformed
+    }
 
-    private void jMenuItemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInfoActionPerformed
+    private void jMenuItemInfoActionPerformed(java.awt.event.ActionEvent evt) {
         if (infoDialog == null)
         {
-            infoDialog = new /*NewJDialog*/ InfoDialog(new JFrame(), true);
+            infoDialog = new InfoDialog(new JFrame(), true);
         
             System.out.println("Obiekt InfoDialog utworzony. Event zadziałał.");
         }
         infoDialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItemInfoActionPerformed
+    }
 
-    private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonWriteMailActionPerformed
+    private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonWriteMailActionPerformed
+    }
 
-    private void jMenuWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuWriteMailActionPerformed
+    private void jMenuWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
 
-    }//GEN-LAST:event_jMenuWriteMailActionPerformed
+    }
 
-    private void jMenuItemWriteMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemWriteMailActionPerformed
+    private void jMenuItemWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
         writeMail();
-    }//GEN-LAST:event_jMenuItemWriteMailActionPerformed
+    }
 
-    private void jMenuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSettingsActionPerformed
+    private void jMenuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {
         if (settingsDialog == null)
         {
             settingsDialog = new SettingsDialog(new JFrame(), true);
@@ -777,35 +717,35 @@ public class MailClientApp extends javax.swing.JFrame {
             System.out.println("Obiekt SettingsDialog utworzony.");
         }
         settingsDialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItemSettingsActionPerformed
+    }
 
-    private void jButtonRecMailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRecMailsActionPerformed
+    private void jButtonRecMailsActionPerformed(java.awt.event.ActionEvent evt) {
         showList("received_mails");
-    }//GEN-LAST:event_jButtonRecMailsActionPerformed
+    }
 
-    private void jButtonSendMailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendMailsActionPerformed
+    private void jButtonSendMailsActionPerformed(java.awt.event.ActionEvent evt) {
         showList("sent_mails");
-    }//GEN-LAST:event_jButtonSendMailsActionPerformed
+    }
 
-    private void jButtonTrashMailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTrashMailsActionPerformed
+    private void jButtonTrashMailsActionPerformed(java.awt.event.ActionEvent evt) {
         showList("trash");
-    }//GEN-LAST:event_jButtonTrashMailsActionPerformed
+    }
 
-    private void jMenuItemRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRecActionPerformed
+    private void jMenuItemRecActionPerformed(java.awt.event.ActionEvent evt) {
         jButtonRecMailsActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemRecActionPerformed
+    }
 
-    private void jMenuItemSentMailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSentMailsActionPerformed
+    private void jMenuItemSentMailsActionPerformed(java.awt.event.ActionEvent evt) {
         jButtonSendMailsActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemSentMailsActionPerformed
+    }
 
-    private void jMenuItemTrashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTrashActionPerformed
+    private void jMenuItemTrashActionPerformed(java.awt.event.ActionEvent evt) {
         jButtonTrashMailsActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemTrashActionPerformed
+    }
 
     
     /////////////////////////////////
-    //// PODSTAWOWE FUNKCJE POŁĄCZEŃ
+    //// PRIMARY CONNECTION FUNCTIONS
     /////////////////////////////////
     
     // utworzenie buforów wyjścia i wejścia dla zwykłego połączenia
@@ -813,56 +753,20 @@ public class MailClientApp extends javax.swing.JFrame {
     {
         try {   
             // utworzenie obiektu writera do wysyłania zapytań do serwera
-            //writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             writer = new BufferedOutputStream(clientSocket.getOutputStream());
-            obWriter = new ObjectOutputStream(writer);
-            obWriter.flush();
+            objectWriter = new ObjectOutputStream(writer);
+            objectWriter.flush();
             
             // utworzenie obiektu readera do odczytu odpowiedzi z serwera
-            //reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             reader = new BufferedInputStream(clientSocket.getInputStream());
-            obReader = new ObjectInputStream(reader);
+            objectReader = new ObjectInputStream(reader);
         } catch (IOException ex) {
             Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
             System.out.println("Bufory poprawnie utworzone");
         }
-    }
-    
-    /*
-    // utworzenie buforów wyjścia i wejścia dla połączenia SSL
-    private void createBuffersSSL() throws IOException
-    {
-        // utworzenie obiektu readera do odczytu odpowiedzi z serwera
-        //reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        reader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-        
-        // utworzenie obiektu writera do wysyłania zapytań do serwera
-        //writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-        // writer = new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream()));
-    }
-    
-    // nawiązanie połączenia z serwerem przez SSL
-    public void connectSSL() throws UnknownHostException, IOException{
-        System.out.println("Próba połączenia z serwerem e-mail " + hostname + ":" + port);
-        
-        try
-        {
-            sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            sslSocket = (SSLSocket) sslSocketFactory.createSocket(hostname, port);
-        }
-        catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            System.out.println("Połączenie z serwerem e-mail nawiązane!");
-        }
-        
-        // utworzenie buforów wejścia i wyjścia
-        createBuffers();
-    }
-    */
-    
+    }   
     
     // nawiązanie połączenia z serwerem
     public int connect(int port, String ip) throws UnknownHostException, IOException{
@@ -871,17 +775,11 @@ public class MailClientApp extends javax.swing.JFrame {
         try
         {
             clientSocket = new Socket(ip, port);
-            
-            // clientSocket.setSoTimeout(50000);
         }
         catch (IOException ioException) {
             ioException.printStackTrace();
             
             return -1;
-        } finally {
-            
-            
-            // System.out.println("Połączenie z serwerem e-mail nawiązane!");
         }
         
         // utworzenie buforów wejścia i wyjścia
@@ -913,12 +811,12 @@ public class MailClientApp extends javax.swing.JFrame {
     // wysłanie komunikatu do serwera
     public void sendCommand() throws IOException
     {
-       obWriter.reset();
+       objectWriter.reset();
         
-       System.out.println("Klient: " + list.get(0));
+       System.out.println("Klient: " + mailsList.get(0));
        
-       obWriter.writeObject(list);
-       obWriter.flush();
+       objectWriter.writeObject(mailsList);
+       objectWriter.flush();
     }
     
     /////////////////////////////
@@ -952,7 +850,7 @@ public class MailClientApp extends javax.swing.JFrame {
             map.put("received_date", ft.format(dNow));
             
             String title = map.get("title").toString();
-            final int LENGHT = 37 /*43*/;
+            final int LENGHT = 37;
             if (title.length() > LENGHT)
             {
                 title = title.substring(0, LENGHT) + "...";
@@ -962,15 +860,14 @@ public class MailClientApp extends javax.swing.JFrame {
             tmp_table[1] = ft.format(dNow);
             tmp_table[2] = map.get("title").toString();
             tmp_table[3] = map.get("sender").toString();
-            // tmp_table[4] = map.get("received_date").toString();
             
             saveMailXML("rec", map);
             
             recModel.add(0, tmp_table);
             
             try {
-                list.set(0, response);
-                list.set(1, null);
+                mailsList.set(0, response);
+                mailsList.set(1, null);
                 
                 sendCommand();
             } catch (IOException ex) {
@@ -989,10 +886,9 @@ public class MailClientApp extends javax.swing.JFrame {
         else if (!response.equals("done"))
         {
             try{
-                list.set(0, response);
-                list.set(1, null);
+                mailsList.set(0, response);
+                mailsList.set(1, null);
                 
-                // sendCommand(response);
                 sendCommand();
             } catch(IOException e){
                 System.out.println("Problem z wysłaniem rozkazu " + response + "!");
@@ -1090,11 +986,11 @@ public class MailClientApp extends javax.swing.JFrame {
                     break;
             }   
             
-            new File(/*"database/rec_mails/"*/ dirname + user + "/" + title).mkdir();
+            new File(dirname + user + "/" + title).mkdir();
             
             xmlOutput.setFormat(Format.getPrettyFormat());
             xmlOutput.output(document, new FileOutputStream (  
-              /*"database/rec_mails/"*/ dirname + user + "/" + title + "/" + title + ".xml"));
+              dirname + user + "/" + title + "/" + title + ".xml"));
            } catch (IOException io) {  
             System.out.println(io.getMessage());
            }  
@@ -1106,8 +1002,6 @@ public class MailClientApp extends javax.swing.JFrame {
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); //.SSSSSS'Z'
         SimpleDateFormat print = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        //sdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-        //print.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         
@@ -1149,7 +1043,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
                     // Odczytanie daty odebrania wiadomości z pliku maila w katalogu roboczym
                     
-                    final int LENGHT = 37 /*43*/;
+                    final int LENGHT = 37;
                     
                     String temp_t = s;
                     if (temp_t.length() > LENGHT)
@@ -1184,45 +1078,37 @@ public class MailClientApp extends javax.swing.JFrame {
             }
         }
         
-        // SORTOWANIE MAILI WEDŁUG DATY ODBIORU
-        //for (String i[] : Mailsqueue)
-        //{           
+        // SORTOWANIE MAILI WEDŁUG DATY ODBIORU         
             String pom[];
  
             for (int i = 0; i < Mailsqueue.size(); i++)
             {
                 for (int j = 0; j < Mailsqueue.size() - i - 1; j++)           //pętla wewnętrzna
-                {
-                    Date d1 = null;
-                    Date d2 = null;
-                    
-                    String now = Mailsqueue.get(j)[1];
-                    String next = Mailsqueue.get(j+1)[1];
-                    
-                    System.out.println("now: " + now);
-                    System.out.println("next: " + next);
-                    
-                    try {
-                        d1 = print.parse(now);
-                        d2 = print.parse(next);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    if (d1.getTime() < d2.getTime())
-                    {
-                      //zamiana miejscami
-                      //pom = now;
-                      //Mailsqueue.get(j)[1] = next;
-                      //Mailsqueue.get(j+1)[1] = pom;
-                        
-                      pom = Mailsqueue.get(j);
-                      Mailsqueue.set(j, Mailsqueue.get(j+1));
-                      Mailsqueue.set(j+1, pom);
-                    }
+            {
+                Date d1 = null;
+                Date d2 = null;
+                
+                String now = Mailsqueue.get(j)[1];
+                String next = Mailsqueue.get(j+1)[1];
+                
+                System.out.println("now: " + now);
+                System.out.println("next: " + next);
+                
+                try {
+                    d1 = print.parse(now);
+                    d2 = print.parse(next);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if (d1.getTime() < d2.getTime())
+                {            
+                  pom = Mailsqueue.get(j);
+                  Mailsqueue.set(j, Mailsqueue.get(j+1));
+                  Mailsqueue.set(j+1, pom);
                 }
             }
-        //}
+        }
         
         // DODANIE DO WYŚWIETLENIA         
         for (String i[] : Mailsqueue)
@@ -1317,36 +1203,31 @@ public class MailClientApp extends javax.swing.JFrame {
             for (int i = 0; i < Mailsqueue.size(); i++)
             {
                 for (int j = 0; j < Mailsqueue.size() - i - 1; j++)           //pętla wewnętrzna
-                {
-                    Date d1 = null;
-                    Date d2 = null;
-                    
-                    String now = Mailsqueue.get(j)[1];
-                    String next = Mailsqueue.get(j+1)[1];
-                    
-                    System.out.println("now: " + now);
-                    System.out.println("next: " + next);
-                    
-                    try {
-                        d1 = print.parse(now);
-                        d2 = print.parse(next);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    if (d1.getTime() < d2.getTime())
-                    {
-                      //zamiana miejscami
-                      //pom = now;
-                      //Mailsqueue.get(j)[1] = next;
-                      //Mailsqueue.get(j+1)[1] = pom;
-                        
-                      pom = Mailsqueue.get(j);
-                      Mailsqueue.set(j, Mailsqueue.get(j+1));
-                      Mailsqueue.set(j+1, pom);
-                    }
+            {
+                Date d1 = null;
+                Date d2 = null;
+                
+                String now = Mailsqueue.get(j)[1];
+                String next = Mailsqueue.get(j+1)[1];
+                
+                System.out.println("now: " + now);
+                System.out.println("next: " + next);
+                
+                try {
+                    d1 = print.parse(now);
+                    d2 = print.parse(next);
+                } catch (ParseException ex) {
+                    Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if (d1.getTime() < d2.getTime())
+                {                     
+                  pom = Mailsqueue.get(j);
+                  Mailsqueue.set(j, Mailsqueue.get(j+1));
+                  Mailsqueue.set(j+1, pom);
                 }
             }
+        }
         
         // DODANIE DO WYŚWIETLENIA         
         for (String i[] : Mailsqueue)
@@ -1375,7 +1256,7 @@ public class MailClientApp extends javax.swing.JFrame {
             logging = loginDialog.getReturnStatus();
             if (!loginDialog.isVisible())
             {
-                if (logging.equals("RET_CANCEL") /*|| logging.equals("EXIT")*/ || logging.equals(""))
+                if (logging.equals("RET_CANCEL") || logging.equals(""))
                 {
                     client.dispose();
                     System.exit(0);
@@ -1387,7 +1268,6 @@ public class MailClientApp extends javax.swing.JFrame {
             // WYSYŁANIE KOMUNIKATU Z LOGINEM I HASŁEM
             if (!logging.equals("") && !logging.equals("RET_CANCEL"))
             {
-                // String ret = loginDialog.getReturnStatus();
                 int deli = logging.indexOf("|");
                 String login = logging.substring(0, deli);
                 String passwd = logging.substring(deli+1);
@@ -1396,8 +1276,8 @@ public class MailClientApp extends javax.swing.JFrame {
                 req += " LOGIN " + login + ", ";
                 req += "PASSWD " + passwd;
 
-                client.list.set(0, req);
-                client.list.set(1, null);
+                client.mailsList.set(0, req);
+                client.mailsList.set(1, null);
 
                 // Próba połączenia z serwerem
                 if (client.notConnected)
@@ -1420,7 +1300,7 @@ public class MailClientApp extends javax.swing.JFrame {
                         try {
                             client.sendCommand();
 
-                            frame = obReader.readObject();
+                            frame = objectReader.readObject();
 
                             l = (List<Object>)frame;
                             response = (String) l.get(0);
@@ -1453,7 +1333,7 @@ public class MailClientApp extends javax.swing.JFrame {
                                 {
                                     try {
                                         // odczyt odpowiedzi
-                                        frame = obReader.readObject();
+                                        frame = objectReader.readObject();
                                         l = (List<Object>)frame;
                                         response = (String) l.get(0);
 
@@ -1508,8 +1388,7 @@ public class MailClientApp extends javax.swing.JFrame {
     
     // GŁÓWNY WĄTEK KLIENTA
     public static void main(String arg[]) throws ClassNotFoundException, ParseException {
-        /* Create and display the form */
-        /*java.awt.EventQueue*/ SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
         
@@ -1534,8 +1413,8 @@ public class MailClientApp extends javax.swing.JFrame {
     public void setMailFrame(MailClientApp client)
     {
         String comm = mailProtocol.getCommand("request", "mail");
-        client.list.set(0, comm);
-        client.list.set(1, mail_frame);
+        client.mailsList.set(0, comm);
+        client.mailsList.set(1, mailFrame);
         
         try {
                 client.sendCommand();
@@ -1597,21 +1476,11 @@ public class MailClientApp extends javax.swing.JFrame {
             Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    /*
-    private void addMailToSentList(String title)
-    {
-        
-        
-        sentModel.add(title);
-    }
-    */
             
-            
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+
+    private javax.swing.JButton jButtonAddToTrash;
+    private javax.swing.JButton jButtonDeleteMsg;
+    private javax.swing.JButton jButtonSetAsRead;
     private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonRecMails;
     private javax.swing.JButton jButtonSendMails;
@@ -1622,7 +1491,7 @@ public class MailClientApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelMsgTitle;
     private static javax.swing.JLabel jLabelWelcome;
     private javax.swing.JList jListMails;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItemInfo;
     private javax.swing.JMenuItem jMenuItemLogout;
     private javax.swing.JMenuItem jMenuItemRec;
@@ -1631,10 +1500,9 @@ public class MailClientApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemTrash;
     private javax.swing.JMenuItem jMenuItemWriteMail;
     private javax.swing.JMenu jMenuWriteMail;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jMainPanel;
+    private javax.swing.JPanel jLeftPanel;
+    private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    // End of variables declaration//GEN-END:variables
 
 }
