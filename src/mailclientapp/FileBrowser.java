@@ -12,25 +12,12 @@ import java.io.File;
  * @author ethenq
  */
 public class FileBrowser extends javax.swing.JDialog {
-
-    private final int RET_CANCEL = 0;
-    private final int RET_OK = 1;
-    
-    private File attachment = null;
+  
+    private File attachment;
     
     public FileBrowser(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
-        
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                setVisible(false);
-                dispose();
-            }
-        });
-        
-        initComponents();
-        setVisible(true);
+        initComponents();  
     }
 
     public File getAttachment()
@@ -39,6 +26,14 @@ public class FileBrowser extends javax.swing.JDialog {
     }
     
     private void initComponents() {
+    	addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                setVisible(false);
+                dispose();
+            }
+        });
+    	
         jFileChooser = new javax.swing.JFileChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -65,6 +60,10 @@ public class FileBrowser extends javax.swing.JDialog {
         );
 
         pack();
+        
+        jFileChooser.setApproveButtonText("Wczytaj plik");
+        jFileChooser.setDialogTitle("Wczytaj plik");
+        setVisible(true);
     }
 
     private void jFileChooserActionPerformed(java.awt.event.ActionEvent evt) {

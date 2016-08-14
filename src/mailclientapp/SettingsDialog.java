@@ -32,29 +32,6 @@ public class SettingsDialog extends javax.swing.JDialog {
         System.out.println("Settings Dialog initialized");
         initComponents();
         
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = (int)screenSize.getWidth();
-        int h = (int)screenSize.getHeight();
-        
-        Dimension windowSize = getSize();
-        int x = (int)windowSize.getWidth();
-        int y = (int)windowSize.getHeight();
-        
-        setLocation((w/2)-(x/2), (h/2)-(y/2));
-        toFront();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Ustawienia programu");
-        
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                setVisible(false);
-            }
-        });
-        
-        pack();
-        setResizable(false);
-        
         try {
             loadSettingsFromFile();
         } catch (JDOMException | IOException ex) {
@@ -265,9 +242,32 @@ public class SettingsDialog extends javax.swing.JDialog {
         );
 
         pack();
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = (int)screenSize.getWidth();
+        int h = (int)screenSize.getHeight();
+        
+        Dimension windowSize = getSize();
+        int x = (int)windowSize.getWidth();
+        int y = (int)windowSize.getHeight();
+        
+        setLocation((w/2)-(x/2), (h/2)-(y/2));
+        toFront();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ustawienia programu");
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                setVisible(false);
+            }
+        });
+        
+        pack();
+        setResizable(false);
     }
 
-    private void jButtonSaveSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveSettingsActionPerformed
+    private void jButtonSaveSettingsActionPerformed(java.awt.event.ActionEvent evt) {
         saveSettings();
     }
 

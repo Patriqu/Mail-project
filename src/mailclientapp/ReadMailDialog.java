@@ -49,13 +49,13 @@ public class ReadMailDialog extends javax.swing.JDialog {
 	// A return status code - returned RET_CANCEL if Cancel button has been pressed
     public static final int RETURN_CANCEL = 0;
     public static final int RETURN_OK = 1;
+    private int returnStatus = RETURN_CANCEL;
 	
     private String sender = "";
     private String receiver = "";
     private String title = "";
     private String date = "";
     private String msgContent = "";
-    
     private String user;
     private String type;
     
@@ -72,56 +72,26 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private List attachments = new ArrayList<>();
 
 
-    public ReadMailDialog(java.awt.Frame parent, boolean modal, int index, String readMail, String user, String type) throws FileNotFoundException {
+    public ReadMailDialog(java.awt.Frame parent, boolean modal, int index, String title, String user, String type) throws FileNotFoundException {
         super(parent, modal);
-        
         this.parent = parent;
         this.index = index;
+        this.title = title;
         this.user = user;
         this.type = type;
-
         initComponents();
-        if (type.equals("sent"))
-        {
-        	jLabelDate.setText("Data wysłania:");
-        }
         
-        // Close the dialog when Esc key is pressed
-        String cancelName = "cancel";
-        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
-        ActionMap actionMap = getRootPane().getActionMap();
-        actionMap.put(cancelName, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                doClose(RETURN_CANCEL);
-            }
-        });
-
-        readMailFromDatabase(readMail, user);
+        readMailFromDatabase();
     }
     
-    public int getDeletedMailIndex()
-    {
-        int tmp =  deletedMailIndex;
-        deletedMailName = "";
-        deletedMailIndex = -1;
-        
-        return tmp;
-    }
-    
-    public int getReturnStatus() {
-        return returnStatus;
-    }
-    
-    private void readMailFromDatabase(String title, String user) throws FileNotFoundException
+    private void readMailFromDatabase() throws FileNotFoundException
     {
         setTitle(title);
         
         SAXBuilder saxBuilder = new SAXBuilder();
         
         String dirName = "";
-        switch (this.type) {
+        switch (type) {
             case "rec":
                 dirName = "database/rec_mails/";
                 break;
@@ -142,23 +112,22 @@ public class ReadMailDialog extends javax.swing.JDialog {
             // get root node from xml  
             Element rootNode = document.getRootElement();
 
-            this.sender = rootNode.getChild("sender").getValue();
-            this.receiver = rootNode.getChild("receiver").getValue();
-            this.title = rootNode.getChild("title").getValue();
+            sender = rootNode.getChild("sender").getValue();
+            receiver = rootNode.getChild("receiver").getValue();
+            title = rootNode.getChild("title").getValue();
             
-            if (this.type.equals("sent")) {
-            	this.date = rootNode.getChild("datetime").getValue();
+            if (type.equals("sent")) {
+            	date = rootNode.getChild("datetime").getValue();
             }
             else {
-            	this.date = rootNode.getChild("received_date").getValue();
+            	date = rootNode.getChild("received_date").getValue();
             } 
             
-            this.msgContent = rootNode.getChild("mail_txt").getValue();
+            msgContent = rootNode.getChild("mail_txt").getValue();
             
             //// add attachments to attachments list
             
-            List<Element> tmpAttachments = rootNode.getChildren("attachment");
-            
+            List<Element> tmpAttachments = rootNode.getChildren("attachment");          
             for (Element el : tmpAttachments)
             {
                 String name = el.getChild("att_title").getValue();
@@ -166,23 +135,46 @@ public class ReadMailDialog extends javax.swing.JDialog {
                 String path = dirName + user + "/" + title + "/" + name;
                 attachments.add(path);
                 
-                File plik = new File(path);
-                double size = Math.round( ((double)plik.length() / 1024.0 / 1024.0) * 10.0) / 10.0;
+                File tmpFile = new File(path);
+                double size = Math.round( ((double)tmpFile.length() / 1024.0 / 1024.0) * 10.0) / 10.0;
                 
-                String full_name = path + "  (rozmiar: " + size + " MB)"; 
+                String fullName = path + "  (rozmiar: " + size + " MB)"; 
                 
-                defaultListModel.add(0, full_name); 
+                defaultListModel.add(0, fullName); 
             }
 
             jTextFieldSender.setText(sender);
             jTextFieldReceiver.setText(receiver);
-            jTextFieldTitle.setText(this.title);
+            jTextFieldTitle.setText(title);
             jLabelDateValue.setText(date);
             jTextAreaText.setText(msgContent);
             
             System.gc();
         } catch (JDOMException | IOException e) {  
         }
+    }
+    
+    private void closeDialog(java.awt.event.WindowEvent evt) {
+        doClose(RETURN_CANCEL);
+    }
+    
+    private void doClose(int retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+        dispose();
+    }
+    
+    public int getDeletedMailIndex()
+    {
+        int tmp =  deletedMailIndex;
+        deletedMailName = "";
+        deletedMailIndex = -1;
+        
+        return tmp;
+    }
+    
+    public int getReturnStatus() {
+        return returnStatus;
     }
     
     private void initComponents() {
@@ -199,7 +191,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jPanelAttachments = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jListAtts = new javax.swing.JList();
+        jListAttachments = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         jButtonBrowse = new javax.swing.JButton();
         jLabelTitle = new javax.swing.JLabel();
@@ -278,13 +270,13 @@ public class ReadMailDialog extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jListAtts.setModel(defaultListModel);
-        jScrollPane5.setViewportView(jListAtts);
+        jListAttachments.setModel(defaultListModel);
+        jScrollPane5.setViewportView(jListAttachments);
         jScrollPane5.setWheelScrollingEnabled(true);
         jScrollPane5.getVerticalScrollBar().setUnitIncrement(64);
 
         // Opening "File Saver" to copy attachment file in the other place (on disc)
-        listSelectionModel = jListAtts.getSelectionModel();
+        listSelectionModel = jListAttachments.getSelectionModel();
         listSelectionModel.addListSelectionListener(
             new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
@@ -312,9 +304,9 @@ public class ReadMailDialog extends javax.swing.JDialog {
 
                                 System.out.println("Component name: " + x);
 
-                                jListAtts.clearSelection();
+                                jListAttachments.clearSelection();
 
-                                JDialog jdialog = (JDialog) SwingUtilities.getRoot(jListAtts);
+                                JDialog jdialog = (JDialog) SwingUtilities.getRoot(jListAttachments);
 
                                 final FileSaver fileSaver = new FileSaver(jdialog, true, x);
                             }
@@ -504,8 +496,25 @@ public class ReadMailDialog extends javax.swing.JDialog {
             jTextFieldSender.setEnabled(false);
             jTextFieldSender.setDisabledTextColor(Color.BLACK);
             jTextFieldSender.setBorder(new MetalBorders.TextFieldBorder());
-
+            
+            if (type.equals("sent"))
+            {
+            	jLabelDate.setText("Data wysłania:");
+            }
+            
             pack();
+            
+            // Close the dialog when Esc key is pressed
+            String cancelName = "cancel";
+            InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
+            ActionMap actionMap = getRootPane().getActionMap();
+            actionMap.put(cancelName, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    doClose(RETURN_CANCEL);
+                }
+            });
         }
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
@@ -597,16 +606,6 @@ public class ReadMailDialog extends javax.swing.JDialog {
         }
     }
     
-    private void closeDialog(java.awt.event.WindowEvent evt) {
-        doClose(RETURN_CANCEL);
-    }
-    
-    private void doClose(int retStatus) {
-        returnStatus = retStatus;
-        setVisible(false);
-        dispose();
-    }
-    
 
     public static void main(String args[]) {
         try {
@@ -641,10 +640,10 @@ public class ReadMailDialog extends javax.swing.JDialog {
                     dialog = new ReadMailDialog(new javax.swing.JFrame(), true, -1, "", "", "");
                     
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
+	                    @Override
+	                    public void windowClosing(java.awt.event.WindowEvent e) {
+	                        System.exit(0);
+	                    }
                 });
                 dialog.setVisible(true);
                 } catch (FileNotFoundException ex) {
@@ -668,7 +667,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelReceiver;
     private javax.swing.JLabel jLabelSender;
     private javax.swing.JLabel jLabelTitle;
-    private javax.swing.JList jListAtts;
+    private javax.swing.JList jListAttachments;
     private javax.swing.JPanel jPanelMsgContent;
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JPanel jPanelTitle;
@@ -685,6 +684,4 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldReceiver;
     private javax.swing.JTextField jTextFieldSender;
     private javax.swing.JTextField jTextFieldTitle;
-
-    private int returnStatus = RETURN_CANCEL;
 }

@@ -19,31 +19,13 @@ import java.util.logging.Logger;
  */
 public class FileSaver extends javax.swing.JDialog {
 
-    private final int RET_CANCEL = 0;
-    private final int RET_OK = 1;
-    
     private File attachment;
     public String filePath;
     
-    public FileSaver(java.awt.Dialog parent, boolean modal, String file_path) {
-        super(parent, modal);
-        
-        this.filePath = file_path;
-        
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                setVisible(false);
-                dispose();
-            }
-        });
-        
+    public FileSaver(java.awt.Dialog parent, boolean modal, String filePath) {
+        super(parent, modal); 
+        this.filePath = filePath;
         initComponents();
-        
-        jFileChooser.setApproveButtonText("Zapisz plik");
-        jFileChooser.setDialogTitle("Zapisz plik");
-        jFileChooser.setSelectedFile(new File(filePath));
-        setVisible(true);
     }
 
     public File getAttachment()
@@ -52,6 +34,14 @@ public class FileSaver extends javax.swing.JDialog {
     }
     
     private void initComponents() {
+    	addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                setVisible(false);
+                dispose();
+            }
+        });
+    	
         jFileChooser = new javax.swing.JFileChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -78,6 +68,11 @@ public class FileSaver extends javax.swing.JDialog {
         );
 
         pack();
+        
+        jFileChooser.setApproveButtonText("Zapisz plik");
+        jFileChooser.setDialogTitle("Zapisz plik");
+        jFileChooser.setSelectedFile(new File(filePath));
+        setVisible(true);
     }
 
     private void jFileChooserActionPerformed(java.awt.event.ActionEvent evt) {

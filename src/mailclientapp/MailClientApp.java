@@ -93,48 +93,35 @@ public class MailClientApp extends javax.swing.JFrame {
     private DefaultListModel sentModel = new DefaultListModel();
     private DefaultListModel trashModel = new DefaultListModel();
     
-    ListSelectionModel listSelectionModel;
-    ListSelectionModel sentListSelectionModel;
-    ListSelectionModel trashListSelectionModel;
+    private ListSelectionModel listSelectionModel;
+    private ListSelectionModel sentListSelectionModel;
+    private ListSelectionModel trashListSelectionModel;
     
-    boolean notConnected;
-    private String m_listType;
+    private String listType;
+    
+    public boolean isNotConnected;
     
     
     public MailClientApp() { 
-        setTitle("Klient poczty E-mail");
-        
         mailProtocol = new MailProtocol();
+        listType = "rec";
+        initComponents();
         
         mailsList.add(0, null);
         mailsList.add(1, null);
-
-        initComponents();
-        m_listType = "rec";
-        
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = (int)screenSize.getWidth();
-        int h = (int)screenSize.getHeight();
-        
-        Dimension windowSize = getSize();
-        int x = (int)windowSize.getWidth();
-        int y = (int)windowSize.getHeight();
-        
-        setLocation((w/2)-(x/2), (h/2)-(y/2));
-        setResizable(false);
     }
 
     
-    // CLASS TO CREATING MAILS LISTS:
+    // CLASS FOR CREATING MAILS LISTS:
     class MyCellRenderer extends JPanel implements ListCellRenderer { 
         private static final long serialVersionUID = 1L;
         JCheckBox checkbox;
         JLabel left, middle, right;
-        JSeparator sep1, sep2;
+        JSeparator separator1, separator2;
 
         MyCellRenderer() {
             GridBagLayout grid = new GridBagLayout();
-            GridBagConstraints c = new GridBagConstraints();
+            GridBagConstraints constraint = new GridBagConstraints();
 
             setLayout(grid);
             
@@ -143,74 +130,70 @@ public class MailClientApp extends javax.swing.JFrame {
             middle = new JLabel();
             right = new JLabel();
             
-            sep1 = new JSeparator();
-            sep2 = new JSeparator();
-            sep1.setOrientation(SwingConstants.VERTICAL);
-            sep2.setOrientation(SwingConstants.VERTICAL);
+            separator1 = new JSeparator();
+            separator2 = new JSeparator();
+            separator1.setOrientation(SwingConstants.VERTICAL);
+            separator2.setOrientation(SwingConstants.VERTICAL);
             
-            Dimension cb_min = new Dimension();
-            cb_min.setSize(100, 20);
+            Dimension cbMin = new Dimension();
+            cbMin.setSize(100, 20);
             
-            Dimension cb_max = new Dimension();
-            cb_max.setSize(100, 20);
+            Dimension cbMax = new Dimension();
+            cbMax.setSize(100, 20);
             
+            Dimension leftMin = new Dimension();
+            leftMin.setSize(600, 20);
             
+            Dimension leftMax = new Dimension();
+            leftMax.setSize(600, 20);
             
-            Dimension l_min = new Dimension();
-            l_min.setSize(600, 20);
+            checkbox.setMinimumSize(cbMin);
+            checkbox.setMaximumSize(cbMax);
             
-            Dimension l_max = new Dimension();
-            l_max.setSize(600, 20);
-            
-            checkbox.setMinimumSize(cb_min);
-            checkbox.setMaximumSize(cb_max);
-            
-            
-            left.setMinimumSize(l_min);
-            left.setMaximumSize(l_max);
+            left.setMinimumSize(leftMin);
+            left.setMaximumSize(leftMax);
             
             middle.setHorizontalAlignment(SwingConstants.RIGHT);
-            
             right.setHorizontalAlignment(SwingConstants.RIGHT);
             
-            c.anchor = GridBagConstraints.LINE_START;
-            c.fill = GridBagConstraints.BOTH;
+            constraint.anchor = GridBagConstraints.LINE_START;
+            constraint.fill = GridBagConstraints.BOTH;
             
-            add(checkbox, c);
+            add(checkbox, constraint);
             
-            c.insets = new Insets(0, 272, 0, 20);
-            add(sep1, c);
-            c.insets = new Insets(0, 90, 0, 20);
-            add(sep2, c);
+            constraint.insets = new Insets(0, 272, 0, 20);
+            add(separator1, constraint);
+            constraint.insets = new Insets(0, 90, 0, 20);
+            add(separator2, constraint);
             
-            c.insets = new Insets(0, 22, 0, 140);
+            constraint.insets = new Insets(0, 22, 0, 140);
             
-            c.ipadx = 0;
-            c.weightx = 1.0;
-            c.weighty = 1.0;
-            c.ipadx = 20;
+            constraint.ipadx = 0;
+            constraint.weightx = 1.0;
+            constraint.weighty = 1.0;
+            constraint.ipadx = 20;
             
-            c.gridx = 0;
-            c.gridy = 0;
-            c.gridwidth = 400;
-            add(left, c);
+            constraint.gridx = 0;
+            constraint.gridy = 0;
+            constraint.gridwidth = 400;
+            add(left, constraint);
             
-            c.anchor = GridBagConstraints.BASELINE;
-            c.fill = GridBagConstraints.RELATIVE;
-            c.insets = new Insets(0, 80, 0, 0);
+            constraint.anchor = GridBagConstraints.BASELINE;
+            constraint.fill = GridBagConstraints.RELATIVE;
+            constraint.insets = new Insets(0, 80, 0, 0);
             
-            c.ipadx = 0;
-            c.gridx = 1;
-            c.gridy = 0;
-            add(middle, c);
+            constraint.ipadx = 0;
+            constraint.gridx = 1;
+            constraint.gridy = 0;
+            add(middle, constraint);
             
-            c.fill = GridBagConstraints.BOTH;
-            c.insets = new Insets(0, 0, 0, 0);
+            constraint.fill = GridBagConstraints.BOTH;
+            constraint.insets = new Insets(0, 0, 0, 0);
             
-            c.ipadx = 0;
-            c.gridx = 2;
-            c.gridy = 0;
-            add(right, c);
+            constraint.ipadx = 0;
+            constraint.gridx = 2;
+            constraint.gridy = 0;
+            add(right, constraint);
         }
 
         @Override
@@ -222,7 +205,8 @@ public class MailClientApp extends javax.swing.JFrame {
             left.setText(leftData);
             middle.setText(middleData);
             right.setText(rightData);
-            if(isSelected){
+            
+            if (isSelected){
                 checkbox.setBackground(list.getSelectionBackground());
                 checkbox.setForeground(list.getSelectionForeground());
                 left.setBackground(list.getSelectionBackground());
@@ -248,14 +232,12 @@ public class MailClientApp extends javax.swing.JFrame {
         }
     }
     
-    @SuppressWarnings("unchecked")
     private void initComponents() {
-
         jMainPanel = new javax.swing.JPanel();
         jLeftPanel = new javax.swing.JPanel();
         jButtonWriteMail = new javax.swing.JButton();
         jLabelWelcome = new javax.swing.JLabel();
-        jButtonRecMails = new javax.swing.JButton();
+        jButtonReceivedMails = new javax.swing.JButton();
         jButtonTrashMails = new javax.swing.JButton();
         jButtonSendMails = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
@@ -293,9 +275,9 @@ public class MailClientApp extends javax.swing.JFrame {
             }
         });
 
-        jButtonRecMails.setText("Odebrane wiadomości");
-        jButtonRecMails.setToolTipText("Lista odebranych przez użytkownika wiadomości");
-        jButtonRecMails.addActionListener(new java.awt.event.ActionListener() {
+        jButtonReceivedMails.setText("Odebrane wiadomości");
+        jButtonReceivedMails.setToolTipText("Lista odebranych przez użytkownika wiadomości");
+        jButtonReceivedMails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRecMailsActionPerformed(evt);
             }
@@ -334,7 +316,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 .addGroup(gl_jLeftPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonWriteMail, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                     .addComponent(jLabelWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonRecMails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonReceivedMails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonTrashMails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonSendMails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -348,7 +330,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jButtonWriteMail, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonRecMails, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonReceivedMails, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonSendMails, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -398,7 +380,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
                                 final ReadMailDialog readMailDialog;
                                 try {
-                                    readMailDialog = new ReadMailDialog(jframe, true, i, x, user, m_listType);
+                                    readMailDialog = new ReadMailDialog(jframe, true, i, x, user, listType);
 
                                     readMailDialog.addWindowListener(new WindowAdapter() {
                                         @Override
@@ -580,6 +562,18 @@ public class MailClientApp extends javax.swing.JFrame {
             );
 
             pack();
+            
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int w = (int)screenSize.getWidth();
+            int h = (int)screenSize.getHeight();
+            
+            Dimension windowSize = getSize();
+            int x = (int)windowSize.getWidth();
+            int y = (int)windowSize.getHeight();
+            
+            setLocation((w/2)-(x/2), (h/2)-(y/2));
+            setResizable(false);
+            setTitle("Klient poczty E-mail");
         }
 
     private void removeMail(String name)
@@ -612,7 +606,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
                 if (writeMail.getReturnStatus() == 0)
                 {
-                    System.out.println("Zamknięcie okna pisania wiadomości.");
+                    System.out.println("Closing writing message window");
                 }
                 else {
                     //// COMPOSING MAIL FRAME TO BE SENT TO RECEIVER CLIENT
@@ -633,8 +627,8 @@ public class MailClientApp extends javax.swing.JFrame {
                         mailsList.set(0, comm);
                         mailsList.set(1, null);
                         
-                        System.out.println("Lista: element 0: " + mailsList.get(0));
-                        System.out.println("Lista: element 1: " + mailsList.get(1));
+                        System.out.println("List element 0: " + mailsList.get(0));
+                        System.out.println("List element 1: " + mailsList.get(1));
                         
                         sendCommand();
                     } catch (IOException ex) {
@@ -642,7 +636,7 @@ public class MailClientApp extends javax.swing.JFrame {
                     }
                     
                     //// UTWORZENIE PLIKU Z MAILEM W KATALOGU WYSŁANYCH
-                    saveMailXML("sent", data);
+                    saveMailToXML("sent", data);
                     
                     //// DODANIE DO LISTY GUI WYSŁANYCH MAILI
                     
@@ -668,7 +662,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // wysłanie rozkazu "BYE" do serwera
+            // sending "BYE" to server
             mailsList.set(0, "BYE");
             mailsList.set(1, null);
             
@@ -686,18 +680,14 @@ public class MailClientApp extends javax.swing.JFrame {
         if (infoDialog == null)
         {
             infoDialog = new InfoDialog(new JFrame(), true);
-        
-            System.out.println("Obiekt InfoDialog utworzony. Event zadziałał.");
         }
         infoDialog.setVisible(true);
     }
 
     private void jButtonWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
 
     private void jMenuWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
-
     }
 
     private void jMenuItemWriteMailActionPerformed(java.awt.event.ActionEvent evt) {
@@ -708,8 +698,6 @@ public class MailClientApp extends javax.swing.JFrame {
         if (settingsDialog == null)
         {
             settingsDialog = new SettingsDialog(new JFrame(), true);
-            
-            System.out.println("Obiekt SettingsDialog utworzony.");
         }
         settingsDialog.setVisible(true);
     }
@@ -743,29 +731,26 @@ public class MailClientApp extends javax.swing.JFrame {
     //// PRIMARY CONNECTION FUNCTIONS
     /////////////////////////////////
     
-    // utworzenie buforów wyjścia i wejścia dla zwykłego połączenia
+    // creating input/output buffers for standard connection
     private void createBuffers()
     {
         try {   
-            // utworzenie obiektu writera do wysyłania zapytań do serwera
             writer = new BufferedOutputStream(clientSocket.getOutputStream());
             objectWriter = new ObjectOutputStream(writer);
             objectWriter.flush();
             
-            // utworzenie obiektu readera do odczytu odpowiedzi z serwera
             reader = new BufferedInputStream(clientSocket.getInputStream());
             objectReader = new ObjectInputStream(reader);
         } catch (IOException ex) {
             Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
-            System.out.println("Bufory poprawnie utworzone");
+        } finally {
+            System.out.println("I/O Buffers created correctly ");
         }
     }   
     
-    // nawiązanie połączenia z serwerem
+    // establish connection with server
     public int connect(int port, String ip) throws UnknownHostException, IOException{
-        System.out.println("Próba połączenia z serwerem e-mail " + ip + ":" + port);
+        System.out.println("Connecting with e-mail server: " + ip + ":" + port);
         
         try
         {
@@ -777,7 +762,6 @@ public class MailClientApp extends javax.swing.JFrame {
             return -1;
         }
         
-        // utworzenie buforów wejścia i wyjścia
         createBuffers();
         
         return 0;
@@ -791,7 +775,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 if (clientSocket.isConnected())
                 {
                     clientSocket.close();
-                    System.out.println("Rozłączono z serwerem");
+                    System.out.println("Disconnected from the server");
                 }
             }
         } catch (IOException ex) {
@@ -800,10 +784,10 @@ public class MailClientApp extends javax.swing.JFrame {
     }
 
     /////////////////////////////////
-    //// WYMIANA POLECEŃ I DANYCH
+    //// COMMUNICATION CLIENT/SERVER
     /////////////////////////////////
     
-    // wysłanie komunikatu do serwera
+    // sending command to server
     public void sendCommand() throws IOException
     {
        objectWriter.reset();
@@ -815,21 +799,19 @@ public class MailClientApp extends javax.swing.JFrame {
     }
     
     /////////////////////////////
-    //// FUNKCJONALNOŚCI MAILOWE
+    //// MAIL FUNCTIONALITIES
     /////////////////////////////
     
-    // obsługa komunikatu
     public void handleCommand(MailClientApp client, String command, List<Object> frame)
     {
         String response = mailProtocol.handleServerCommand(command);
         
         System.out.println("Response from handleServerCommand(): " + response);
         
-        //// wysyłanie rozkazów do serwera ////
+        //// sending requests to server ////
         
         if (response.equals("MAIL"))
         {
-            // wysłanie ramki z zawartością maila (wiadomości tekstowej)
             client.setMailFrame(client);
         }
         else if (response.equals("MAIL SUCCESS"))
@@ -838,7 +820,7 @@ public class MailClientApp extends javax.swing.JFrame {
             
             System.out.println(map.get("sender"));
             
-            String tmp_table[] = new String[4];
+            String tmpTable[] = new String[4];
             
             Date dNow = new Date( );
             SimpleDateFormat ft = new SimpleDateFormat ("dd.MM.yyyy HH:mm:ss");
@@ -851,14 +833,14 @@ public class MailClientApp extends javax.swing.JFrame {
                 title = title.substring(0, LENGHT) + "...";
             }
             
-            tmp_table[0] = title;
-            tmp_table[1] = ft.format(dNow);
-            tmp_table[2] = map.get("title").toString();
-            tmp_table[3] = map.get("sender").toString();
+            tmpTable[0] = title;
+            tmpTable[1] = ft.format(dNow);
+            tmpTable[2] = map.get("title").toString();
+            tmpTable[3] = map.get("sender").toString();
             
-            saveMailXML("rec", map);
+            saveMailToXML("rec", map);
             
-            recModel.add(0, tmp_table);
+            recModel.add(0, tmpTable);
             
             try {
                 mailsList.set(0, response);
@@ -872,7 +854,7 @@ public class MailClientApp extends javax.swing.JFrame {
         
         else if (response.equals("LOGOUT"))
         { 
-            System.out.println("Wylogowywanie...");
+            System.out.println("Logout...");
             
             client.setVisible(false);
             
@@ -886,18 +868,17 @@ public class MailClientApp extends javax.swing.JFrame {
                 
                 sendCommand();
             } catch(IOException e){
-                System.out.println("Problem z wysłaniem rozkazu " + response + "!");
+                System.out.println("Problem with sending response " + response + "!");
             }
         }
     }
     
-    public static void saveMailXML(String mailType, Map<String, Object> m)
+    public static void saveMailToXML(String mailType, Map<String, Object> m)
     {
          try {  
             // get some values from maildata
             String sender = m.get("sender").toString();
             String receiver = m.get("receiver").toString();
-            
             String title = m.get("title").toString();
             String datetime = m.get("datetime").toString();
             // String txt_length = m.get("txt_length");
@@ -907,12 +888,10 @@ public class MailClientApp extends javax.swing.JFrame {
             if (mailType.equals("rec"))
                 received_date = m.get("received_date").toString();
 
-            // returns an xml element object  
-            // school is passed to make it root element in document  
+            // returns an xml element object
             Element mail = new Element("mail");
 
-            // created an document object, all elements will be added to it  
-            // passes school as parameter to make it root element of document  
+            // created an document object, all elements will be added to it
             Document document = new Document(mail);  
 
             // adding child attribute to student element
@@ -942,7 +921,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 atts_el[i].addContent(new Element("att_title").setText(att_title));
                 atts_el[i].addContent(new Element("att_length").setText(tmp_map.get("att_length").toString()));
        
-                //// Zapisanie załącznika na dysk
+                //// Saving attachments on disc
                 
                 String path = "database/rec_mails/" + user + "/" + title;
                 File file = (new File(path));
@@ -991,263 +970,22 @@ public class MailClientApp extends javax.swing.JFrame {
            }  
     }
     
-    //// POPULOWANIE LISTY MAILI ////
-    
-    private void populateRecMailsList() throws ParseException
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); //.SSSSSS'Z'
-        SimpleDateFormat print = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        
-        print.setLenient(false);
-        
-        File dir = new File("database/rec_mails/" + user);          // przeglądanie katalogu z odebranymi mailami
-        dir.mkdirs();                                               // utwórz katalog usera jeśli wcześniej nie utworzony
-        
-        String lista[];
-        lista = dir.list();                                         // listowanie zawartości folderu z mailem (treść maila i załączniki)
-        
-        List<String[]> Mailsqueue = new LinkedList<>();             // kolejka maili do wyświetlenia na liście
-        
-        // PROCES populowania listy maili w interfejsie graficznym:
-        for (String tabla1 : lista) {
-            Path path = Paths.get("database/rec_mails/" + user + "/" + tabla1);
-            
-            File file = new File(path.toString());
-            String pliki[] = file.list();
-            
-            String created = "";
-            try {
-                created = Files.getAttribute(path, "basic:creationTime").toString();
-                
-                System.out.println("File " + file.getName() + " created in " + created);
-            } catch (IOException ex) {
-                Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-            }   
-            
-            for (String name : pliki) {
-                System.out.println("tabla1: " + tabla1);
-                System.out.println("name: " + name);
-
-                if (name.contains(".xml"))
-                {
-                    int x = name.lastIndexOf(".xml");
-                    String s = name.substring(0, x);
-                    System.out.println(s);
-
-                    // Odczytanie daty odebrania wiadomości z pliku maila w katalogu roboczym
-                    
-                    final int LENGHT = 37;
-                    
-                    String temp_t = s;
-                    if (temp_t.length() > LENGHT)
-                    {
-                        temp_t = temp_t.substring(0, LENGHT) + "...";
-                    }
-
-                    Date date = sdf.parse(created.substring(0, 19));
-                    System.out.println("After parsing and to date: " + date.toString());
-                    String tmp_table[] = new String[4];
-                    tmp_table[0] = temp_t;
-                    tmp_table[1] = print.format(sdf.parse(created));
-                    tmp_table[2] = s;
-                    
-                    SAXBuilder saxBuilder = new SAXBuilder();
-                    File xml = new File(file + "/" + name);
-
-                    String sender = "";
-                    
-                    try {
-                        Document document = saxBuilder.build(xml);
-                        Element rootNode = document.getRootElement();
-
-                        sender = rootNode.getChild("sender").getValue();
-                    } catch (JDOMException | IOException e) {
-                    }
-                    
-                    tmp_table[3] = sender;
-                    
-                    Mailsqueue.add(tmp_table);
-                }
-            }
-        }
-        
-        // SORTOWANIE MAILI WEDŁUG DATY ODBIORU         
-            String pom[];
- 
-            for (int i = 0; i < Mailsqueue.size(); i++)
-            {
-                for (int j = 0; j < Mailsqueue.size() - i - 1; j++)           //pętla wewnętrzna
-            {
-                Date d1 = null;
-                Date d2 = null;
-                
-                String now = Mailsqueue.get(j)[1];
-                String next = Mailsqueue.get(j+1)[1];
-                
-                System.out.println("now: " + now);
-                System.out.println("next: " + next);
-                
-                try {
-                    d1 = print.parse(now);
-                    d2 = print.parse(next);
-                } catch (ParseException ex) {
-                    Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                if (d1.getTime() < d2.getTime())
-                {            
-                  pom = Mailsqueue.get(j);
-                  Mailsqueue.set(j, Mailsqueue.get(j+1));
-                  Mailsqueue.set(j+1, pom);
-                }
-            }
-        }
-        
-        // DODANIE DO WYŚWIETLENIA         
-        for (String i[] : Mailsqueue)
-        {
-            recModel.addElement(i);
-        }
-    }
-    
-    
-    private void populateSentMailsList() throws ParseException
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); //.SSSSSS'Z'
-        SimpleDateFormat print = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        
-        print.setLenient(false);
-        
-        File dir = new File("database/sent_mails/" + user);          // przeglądanie katalogu z wysłanymi mailami
-        dir.mkdirs();                                                // utwórz katalog usera jeśli wcześniej nie utworzony
-        
-        String lista[];
-        lista = dir.list();                                         // listowanie zawartości folderu z mailem (treść maila i załączniki)
-        
-        List<String[]> Mailsqueue = new LinkedList<>();             // kolejka maili do wyświetlenia na liście
-        
-        // PROCES populowania listy wysłanych maili w interfejsie graficznym:
-        for (String tabla1 : lista) {
-            Path path = Paths.get("database/sent_mails/" + user + "/" + tabla1);
-            
-            File file = new File(path.toString());
-            String pliki[] = file.list();
-            
-            String created = "";
-            try {
-                created = Files.getAttribute(path, "basic:creationTime").toString();
-                
-                System.out.println("File " + file.getName() + " created in " + created);
-            } catch (IOException ex) {
-                Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-            }   
-            
-            for (String name : pliki) {
-                System.out.println("tabla1: " + tabla1);
-                System.out.println("name: " + name);
-
-                if (name.contains(".xml"))
-                {
-                    int x = name.lastIndexOf(".xml");
-                    String s = name.substring(0, x);
-                    System.out.println(s);
-
-                    // Odczytanie daty odebrania wiadomości z pliku maila w katalogu roboczym
-                    
-                    final int LENGHT = 37 /*43*/;
-                    
-                    String temp_t = s;
-                    if (temp_t.length() > LENGHT)
-                    {
-                        temp_t = temp_t.substring(0, LENGHT) + "...";
-                    }
-
-                    Date date = sdf.parse(created.substring(0, 19));
-                    System.out.println("After parsing and to date: " + date.toString());
-                    String tmp_table[] = new String[4];
-                    tmp_table[0] = temp_t;
-                    tmp_table[1] = print.format(sdf.parse(created));
-                    tmp_table[2] = s;
-                    
-                    SAXBuilder saxBuilder = new SAXBuilder();
-                    File xml = new File(file + "/" + name);
-
-                    String receiver = "";
-                    
-                    try {
-                        Document document = saxBuilder.build(xml);
-                        Element rootNode = document.getRootElement();
-
-                        receiver = rootNode.getChild("receiver").getValue();
-                    } catch (JDOMException | IOException e) {
-                    }
-                    
-                    tmp_table[3] = receiver;
-                    
-                    Mailsqueue.add(tmp_table);
-                }
-            }
-        }
-        
-        // SORTOWANIE MAILI WEDŁUG DATY ODBIORU       
-            String pom[];
- 
-            for (int i = 0; i < Mailsqueue.size(); i++)
-            {
-                for (int j = 0; j < Mailsqueue.size() - i - 1; j++)           //pętla wewnętrzna
-            {
-                Date d1 = null;
-                Date d2 = null;
-                
-                String now = Mailsqueue.get(j)[1];
-                String next = Mailsqueue.get(j+1)[1];
-                
-                System.out.println("now: " + now);
-                System.out.println("next: " + next);
-                
-                try {
-                    d1 = print.parse(now);
-                    d2 = print.parse(next);
-                } catch (ParseException ex) {
-                    Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                if (d1.getTime() < d2.getTime())
-                {                     
-                  pom = Mailsqueue.get(j);
-                  Mailsqueue.set(j, Mailsqueue.get(j+1));
-                  Mailsqueue.set(j+1, pom);
-                }
-            }
-        }
-        
-        // DODANIE DO WYŚWIETLENIA         
-        for (String i[] : Mailsqueue)
-        {
-            sentModel.addElement(i);
-        }
-    }
-    
-    
     public void talking(MailClientApp t_client) 
     {
-        final MailClientApp client = t_client;                    // Utworzenie obiektu klienta
+        final MailClientApp client = t_client;
                 
         // dialog logowania
         loginDialog = new LoginDialog(new JFrame(), true);
-        loginDialog.setVisible(true);                             // ustawienie, że okno logowania jest widoczne
-        final int port = loginDialog.getServerPort();             // pobranie portu serwera z pola tekstowego
-        final String servIP = loginDialog.getServerIP();          // pobranie ip serwera z pola tekstowego
+        loginDialog.setVisible(true);
+        final int port = loginDialog.getServerPort();
+        final String servIP = loginDialog.getServerIP();
                 
-        client.notConnected = true;                               // flaga początkowa - klient nie jest połączony z serwerem
+        client.isNotConnected = true;
         
         String logging;
         while(true)
         {
-            // JEŚLI EKRAN LOGOWANIA NIE JEST WIDOCZNY
+            // If login dialog is not visible
             logging = loginDialog.getReturnStatus();
             if (!loginDialog.isVisible())
             {
@@ -1260,7 +998,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
             System.out.println("Logging: " + logging);
 
-            // WYSYŁANIE KOMUNIKATU Z LOGINEM I HASŁEM
+            // SENDING COMMAND WITH LOGIN AND PASSWORD
             if (!logging.equals("") && !logging.equals("RET_CANCEL"))
             {
                 int deli = logging.indexOf("|");
@@ -1274,8 +1012,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 client.mailsList.set(0, req);
                 client.mailsList.set(1, null);
 
-                // Próba połączenia z serwerem
-                if (client.notConnected)
+                if (client.isNotConnected)
                 {
                     int status = -1;
                     try {
@@ -1286,11 +1023,11 @@ public class MailClientApp extends javax.swing.JFrame {
 
                     if (status == 0)
                     {
-                        client.notConnected = false;
+                        client.isNotConnected = false;
 
-                        Object frame;                   // ramka od serwera jako obiekt
-                        List<Object> l;                 // ramka od serwera jako lista
-                        String response;                // tekst odpowiedzi z serwera
+                        Object frame;                   // frame from the server as object
+                        List<Object> l;                 // frame from the server as list
+                        String response;
 
                         try {
                             client.sendCommand();
@@ -1303,47 +1040,44 @@ public class MailClientApp extends javax.swing.JFrame {
 
                             if (response.contains("HELLO OK"))
                             {
-                                // zamknij okno logowania
                                 loginDialog.doClose("OK");
-
                                 user = login;
-
                                 jLabelWelcome.setText("Zalogowano jako: " + login);
 
                                 try {
-                                    // wypisanie listy plików w konsoli
-                                    client.populateRecMailsList();
-                                    client.populateSentMailsList();
+                                    // listing files in console
+                                    client.populateMailsList("received");
+                                    client.populateMailsList("sent");
                                 } catch (ParseException ex) {
                                     Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
                                 }
 
                                 client.setVisible(true);
 
-                                client.handleCommand(client, response, l);      // obsłuż komendę "HELLO OK" lub "HELLO OK, NEW_MAILS"
+                                // "HELLO OK" or "HELLO OK, NEW_MAILS" commands handle
+                                client.handleCommand(client, response, l);      
 
-                                
-                                // obsługa odbierania odpowiedzi od serwera
+                                //// handling receiving responses from server
                                 while(true)
                                 {
                                     try {
-                                        // odczyt odpowiedzi
+                                        // reading responses
                                         frame = objectReader.readObject();
                                         l = (List<Object>)frame;
                                         response = (String) l.get(0);
 
-                                        System.out.println("Odpowiedź serwera: " + response);
+                                        System.out.println("Server response: " + response);
 
                                         if (response != null && !response.equals("MAIL SUCCESS OK"))
                                         {
-                                            System.out.println("Obsługiwane polecenie: " + response);
+                                            System.out.println("Handled command: " + response);
 
                                             client.handleCommand(client, response, l);
                                         }
 
                                         if (user.equals(""))
                                         {
-                                            client.notConnected = true;
+                                            client.isNotConnected = true;
                                             break;
                                         }
                                     } catch (IOException ex) {
@@ -1354,7 +1088,7 @@ public class MailClientApp extends javax.swing.JFrame {
                             else if (response.equals("HELLO FAIL"))
                             {
                                 client.disconnect();
-                                client.notConnected = true;
+                                client.isNotConnected = true;
 
                                 loginDialog.setWarning("Zły login lub hasło");
                                 loginDialog.setVisible(true);
@@ -1368,41 +1102,158 @@ public class MailClientApp extends javax.swing.JFrame {
                     else if (status == -1)
                     {
                         client.disconnect();
-                        client.notConnected = true;
+                        client.isNotConnected = true;
 
                         loginDialog.setWarning("Serwer jest niedostępny!");
                         loginDialog.setVisible(true);
                     }
                 }
-
-
             }
         }
     }
     
-    
-    // GŁÓWNY WĄTEK KLIENTA
-    public static void main(String arg[]) throws ClassNotFoundException, ParseException {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+    //// POPULATING LIST OF MAILS
+    private void populateMailsList(String type) throws ParseException {
+    	String pathBase = "";
+    	String person = "";
+        switch (type) {
+        	case "received":
+        		pathBase = "database/rec_mails/";
+        		person = "sender";
+        		break;
+        		
+        	case "sent":
+        		pathBase = "database/sent_mails/";
+        		person = "receiver";
+        		break;
+        }
+    	
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); //.SSSSSS'Z'
+        SimpleDateFormat print = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         
-                final MailClientApp client = new MailClientApp();       // instancja tej klasy
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        
+        print.setLenient(false);
+        
+        File dir = new File(pathBase + user);          			// directory searching
+        dir.mkdirs();                                           // create user directory if not exists
+        
+        String list[];
+        list = dir.list();                                      // listing directory content with mail (message and its attachments)
+        
+        List<String[]> mailsQueue = new LinkedList<>();        	// mails queue to be shown on the list
+        
+        //// Process of populating mails list in GUI:
+        for (String one : list) {
+            Path tmpPath = Paths.get(pathBase + user + "/" + one);
+            
+            File file = new File(tmpPath.toString());
+            String files[] = file.list();
+            
+            String created = "";
+            try {
+                created = Files.getAttribute(tmpPath, "basic:creationTime").toString();
                 
-                //// NOWY WĄTEK DLA WYMIANY KOMUNIKATÓW Z SERWEREM
-                Thread thread = new Thread() {
-                
-                    @Override
-                    public void run() {
-                
-                        // komunikacja klient -> serwer
-                        client.talking(client);
-                        
-                    }   // KONIEC DEFINICJI FUNKCJI run()
-                };      // KONIEC KODU NOWEGO WĄTKU
-                thread.start();
+                System.out.println("File " + file.getName() + " created in " + created);
+            } catch (IOException ex) {
+                Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+            
+            for (String name : files) {
+                System.out.println("one: " + one);
+                System.out.println("name: " + name);
+
+                if (name.contains(".xml"))
+                {
+                    int x = name.lastIndexOf(".xml");
+                    String s = name.substring(0, x);
+                    System.out.println(s);
+
+                    //// Read received date of the message from mail file in working directory
+                    
+                    final int LENGHT = 37;
+                    
+                    String temp_t = s;
+                    if (temp_t.length() > LENGHT)
+                    {
+                        temp_t = temp_t.substring(0, LENGHT) + "...";
+                    }
+
+                    Date date = sdf.parse(created.substring(0, 19));
+                    System.out.println("After parsing and to date: " + date.toString());
+                    String tmpTable[] = new String[4];
+                    tmpTable[0] = temp_t;
+                    tmpTable[1] = print.format(sdf.parse(created));
+                    tmpTable[2] = s;
+                    
+                    SAXBuilder saxBuilder = new SAXBuilder();
+                    File xml = new File(file + "/" + name);
+
+                    try {
+                        Document document = saxBuilder.build(xml);
+                        Element rootNode = document.getRootElement();
+
+                        tmpTable[3] = rootNode.getChild(person).getValue();
+                    } catch (JDOMException | IOException e) {
+                    }
+                    
+                    mailsQueue.add(tmpTable);
+                }
             }
-        });
+        }
+        
+        sortMailsByDate(mailsQueue, print);
+        
+        // ADD TO SHOW ON GUI
+        switch (type) {
+        	case "received":
+        		
+                for (String i[] : mailsQueue)
+                {
+                    recModel.addElement(i);
+                }
+                break;
+                
+        	case "sent":       
+                for (String i[] : mailsQueue)
+                {
+                    sentModel.addElement(i);
+                }
+                break;
+        }
+    }
+    
+    private void sortMailsByDate(List<String[]> mailsQueue, SimpleDateFormat datePrint) {
+    	String pom[];
+    	 
+        for (int i = 0; i < mailsQueue.size(); i++)
+        {
+            for (int j = 0; j < mailsQueue.size() - i - 1; j++)
+	        {
+	            Date d1 = null;
+	            Date d2 = null;
+	            
+	            String now = mailsQueue.get(j)[1];
+	            String next = mailsQueue.get(j+1)[1];
+	            
+	            System.out.println("Now: " + now);
+	            System.out.println("Next: " + next);
+	            
+	            try {
+	                d1 = datePrint.parse(now);
+	                d2 = datePrint.parse(next);
+	            } catch (ParseException ex) {
+	                Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
+	            }
+	            
+	            if (d1.getTime() < d2.getTime())
+	            {            
+	              pom = mailsQueue.get(j);
+	              mailsQueue.set(j, mailsQueue.get(j+1));
+	              mailsQueue.set(j+1, pom);
+	            }
+	        }
+        }
     }
     
     public void setMailFrame(MailClientApp client)
@@ -1426,7 +1277,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 jLabelMsgDate.setText("Data odebrania");
                 jLabelMsgSender.setText("Nadawca");
                 
-                m_listType = "rec";
+                listType = "rec";
                 jListMails.setModel(recModel);
                 break;
                 
@@ -1434,7 +1285,7 @@ public class MailClientApp extends javax.swing.JFrame {
                 jLabelMsgDate.setText("Data wysłania");
                 jLabelMsgSender.setText("Odbiorca");
                 
-                m_listType = "sent";
+                listType = "sent";
                 jListMails.setModel(sentModel);
                 break;
                 
@@ -1442,16 +1293,15 @@ public class MailClientApp extends javax.swing.JFrame {
                 jLabelMsgDate.setText("Data odebrania");
                 jLabelMsgSender.setText("Nadawca");
                 
-                m_listType = "trash";
+                listType = "trash";
                 jListMails.setModel(trashModel);
                 break;
         }
     }
     
-    
     private void logoutUser()
     {  
-        // skasowanie listy maili w gui
+        // delete mails list in GUI
         if (!recModel.isEmpty())
             recModel.clear();
         if (!sentModel.isEmpty())
@@ -1459,17 +1309,37 @@ public class MailClientApp extends javax.swing.JFrame {
         if (!trashModel.isEmpty())
             trashModel.clear();
         
-        user = "";                                  // skasowanie usera z aktualnej pamięci
-        loginDialog.showLoginDialog();              // pokaż dialog logowania
+        user = "";
+        loginDialog.showLoginDialog();
     }    
             
     private void closeClientApp()
     {
         try {
-            clientSocket.close();                   // zamknięcie socketa klienta
+            clientSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    // MAIN CLIENT THREAD
+    public static void main(String arg[]) throws ClassNotFoundException, ParseException {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                final MailClientApp client = new MailClientApp();
+                
+                //// NEW THREAD FOR COMMUNICATION WITH THE SERVER
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        client.talking(client);
+                    }
+                };
+                thread.start();
+            }
+        });
     }
             
 
@@ -1477,7 +1347,7 @@ public class MailClientApp extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDeleteMsg;
     private javax.swing.JButton jButtonSetAsRead;
     private javax.swing.JButton jButtonLogout;
-    private javax.swing.JButton jButtonRecMails;
+    private javax.swing.JButton jButtonReceivedMails;
     private javax.swing.JButton jButtonSendMails;
     private javax.swing.JButton jButtonTrashMails;
     private javax.swing.JButton jButtonWriteMail;

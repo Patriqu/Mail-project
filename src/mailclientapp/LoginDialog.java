@@ -33,62 +33,36 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
     // A return status code - returned RET_CANCEL if Cancel button has been pressed
     public static final String RETURN_CANCEL = "0";
     public static String RETURN_OK = "";
-    
     private String returnStatus = "RET_CANCEL";
     
     
     public LoginDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = (int)screenSize.getWidth();
-        int h = (int)screenSize.getHeight();
-        
-        Dimension windowSize = getSize();
-        int x = (int)windowSize.getWidth();
-        int y = (int)windowSize.getHeight();
-        
-        setLocation((w/2)-(x/2), (h/2)-(y/2));
-        toFront();
-        setTitle("Logowanie");
-
-        // Close the dialog when Esc key is pressed
-        String cancelName = "cancel";
-        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
-        ActionMap actionMap = getRootPane().getActionMap();
-        actionMap.put(cancelName, new AbstractAction() {
-            private static final long serialVersionUID = 1L;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                doClose(RETURN_CANCEL);
-            }
-        });
     }
 
     public void setWarning(String warn) {
         jLabelWarning.setText(warn);
     }
 
-    private void closeDialog(java.awt.event.WindowEvent evt) {
-        returnStatus = "RET_CANCEL";
-        doClose(RETURN_CANCEL);
-    }
-    
     private void setReturnValue(String retStatus) {
         returnStatus = retStatus;
-        setVisible(false);
-    }
-    
-    public void doClose(String retStatus)
-    {
         setVisible(false);
     }
     
     public void showLoginDialog()
     {
         setVisible(true);
+    }
+    
+    private void closeDialog(java.awt.event.WindowEvent evt) {
+        returnStatus = "RET_CANCEL";
+        doClose(RETURN_CANCEL);
+    }
+    
+    public void doClose(String retStatus)
+    {
+        setVisible(false);
     }
     
     public void resetReturnStatus()
@@ -247,9 +221,32 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         dispose();
 
         pack();
-    }
-
-    
+        
+        // Close the dialog when Esc key is pressed
+        String cancelName = "cancel";
+        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
+        ActionMap actionMap = getRootPane().getActionMap();
+        actionMap.put(cancelName, new AbstractAction() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doClose(RETURN_CANCEL);
+            }
+        });
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = (int)screenSize.getWidth();
+        int h = (int)screenSize.getHeight();
+        
+        Dimension windowSize = getSize();
+        int x = (int)windowSize.getWidth();
+        int y = (int)windowSize.getHeight();
+        
+        setLocation((w/2)-(x/2), (h/2)-(y/2));
+        toFront();
+        setTitle("Logowanie");
+    } 
     
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {
         String login = jTextFieldLogin.getText();
@@ -272,8 +269,6 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
     }
 
     
-
-
     @Override
     public void run() {
         try {

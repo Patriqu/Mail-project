@@ -12,8 +12,38 @@ public class InfoDialog extends javax.swing.JDialog {
 
     public InfoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        System.out.println("InfoDialog initialized");
+        System.out.println("Info Dialog initialized");
         initComponents();
+    }
+
+    private void initComponents() {
+        jLabelInfo = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabelInfo.setLayout(null);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
+        jLabelInfo.setText("<html>Aplikacja stworzona przez Patryka Siudę z " +
+            "pomocą Marcina Stracha.<br>(C) 2015.</html>");
+
+        pack();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int w = (int)screenSize.getWidth();
@@ -54,36 +84,6 @@ public class InfoDialog extends javax.swing.JDialog {
 
         pack();
         setResizable(false);
-    }
-
-    private void initComponents() {
-        jLabelInfo = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabelInfo.setLayout(null);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
-
-        jLabelInfo.setText("<html>Aplikacja stworzona przez Patryka Siudę z " +
-            "pomocą Marcina Stracha.<br>(C) 2015.</html>");
-
-        pack();
     }
 
 
