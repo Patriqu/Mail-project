@@ -130,7 +130,6 @@ public class SettingsDialog extends javax.swing.JDialog {
         dispose();
     }
     
-    @SuppressWarnings("unchecked")
     private void initComponents() {
         jMenuItem = new javax.swing.JMenuItem();
         jPanelMain = new javax.swing.JPanel();
