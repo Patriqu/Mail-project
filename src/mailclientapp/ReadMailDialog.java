@@ -46,16 +46,15 @@ import org.jdom2.input.SAXBuilder;
  */
 public class ReadMailDialog extends javax.swing.JDialog {
 
-	// A return status code - returned if Cancel button has been pressed
-    public static final int RET_CANCEL = 0;
-    // A return status code - returned if OK button has been pressed
-    public static final int RET_OK = 1;
+	// A return status code - returned RET_CANCEL if Cancel button has been pressed
+    public static final int RETURN_CANCEL = 0;
+    public static final int RETURN_OK = 1;
 	
     private String sender = "";
     private String receiver = "";
     private String title = "";
     private String date = "";
-    private String mailTxt = "";
+    private String msgContent = "";
     
     private String user;
     private String type;
@@ -63,9 +62,9 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private int index;
     
     private DefaultListModel defaultListModel = new DefaultListModel();
-    ListSelectionModel listSelectionModel;
+    private ListSelectionModel listSelectionModel;
     
-    java.awt.Frame parent;
+    private java.awt.Frame parent;
     
     private int deletedMailIndex = -1;
     private String deletedMailName = "";
@@ -77,13 +76,15 @@ public class ReadMailDialog extends javax.swing.JDialog {
         super(parent, modal);
         
         this.parent = parent;
-        this.user = user;
         this.index = index;
+        this.user = user;
         this.type = type;
 
         initComponents();
-        if (this.type.equals("sent"))
-            jLabelDate.setText("Data wysłania:");
+        if (type.equals("sent"))
+        {
+        	jLabelDate.setText("Data wysłania:");
+        }
         
         // Close the dialog when Esc key is pressed
         String cancelName = "cancel";
@@ -93,11 +94,24 @@ public class ReadMailDialog extends javax.swing.JDialog {
         actionMap.put(cancelName, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doClose(RET_CANCEL);
+                doClose(RETURN_CANCEL);
             }
         });
 
         readMailFromDatabase(readMail, user);
+    }
+    
+    public int getDeletedMailIndex()
+    {
+        int tmp =  deletedMailIndex;
+        deletedMailName = "";
+        deletedMailIndex = -1;
+        
+        return tmp;
+    }
+    
+    public int getReturnStatus() {
+        return returnStatus;
     }
     
     private void readMailFromDatabase(String title, String user) throws FileNotFoundException
@@ -107,7 +121,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         SAXBuilder saxBuilder = new SAXBuilder();
         
         String dirName = "";
-        switch (type) {
+        switch (this.type) {
             case "rec":
                 dirName = "database/rec_mails/";
                 break;
@@ -128,18 +142,20 @@ public class ReadMailDialog extends javax.swing.JDialog {
             // get root node from xml  
             Element rootNode = document.getRootElement();
 
-            sender = rootNode.getChild("sender").getValue();
-            receiver = rootNode.getChild("receiver").getValue();
+            this.sender = rootNode.getChild("sender").getValue();
+            this.receiver = rootNode.getChild("receiver").getValue();
             this.title = rootNode.getChild("title").getValue();
             
-            if (type.equals("sent"))
-                date = rootNode.getChild("datetime").getValue();
-            else    
-                date = rootNode.getChild("received_date").getValue();
+            if (this.type.equals("sent")) {
+            	this.date = rootNode.getChild("datetime").getValue();
+            }
+            else {
+            	this.date = rootNode.getChild("received_date").getValue();
+            } 
             
-            mailTxt = rootNode.getChild("mail_txt").getValue();
+            this.msgContent = rootNode.getChild("mail_txt").getValue();
             
-            //// add attachments do attachments list
+            //// add attachments to attachments list
             
             List<Element> tmpAttachments = rootNode.getChildren("attachment");
             
@@ -162,18 +178,13 @@ public class ReadMailDialog extends javax.swing.JDialog {
             jTextFieldReceiver.setText(receiver);
             jTextFieldTitle.setText(this.title);
             jLabelDateValue.setText(date);
-            jTextAreaText.setText(mailTxt);
+            jTextAreaText.setText(msgContent);
             
             System.gc();
         } catch (JDOMException | IOException e) {  
         }
     }
     
-    // return the return status of this dialog - one of RET_OK or RET_CANCEL
-    public int getReturnStatus() {
-        return returnStatus;
-    }
-
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -182,7 +193,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaText = new javax.swing.JTextArea();
         jPanelTop = new javax.swing.JPanel();
-        jPanelMsgTitle = new javax.swing.JPanel();
+        jPanelTitle = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextFieldTitle = new javax.swing.JTextField();
         jPanelAttachments = new javax.swing.JPanel();
@@ -254,15 +265,15 @@ public class ReadMailDialog extends javax.swing.JDialog {
         jScrollPane4.setViewportView(jTextFieldTitle);
         jTextFieldTitle.setDisabledTextColor(Color.BLACK);
 
-        javax.swing.GroupLayout gl_jPanelMsgTitle = new javax.swing.GroupLayout(jPanelMsgTitle);
-        jPanelMsgTitle.setLayout(gl_jPanelMsgTitle);
-        gl_jPanelMsgTitle.setHorizontalGroup(
-            gl_jPanelMsgTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelTitle = new javax.swing.GroupLayout(jPanelTitle);
+        jPanelTitle.setLayout(gl_jPanelTitle);
+        gl_jPanelTitle.setHorizontalGroup(
+            gl_jPanelTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        gl_jPanelMsgTitle.setVerticalGroup(
-            gl_jPanelMsgTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gl_jPanelMsgTitle.createSequentialGroup()
+        gl_jPanelTitle.setVerticalGroup(
+            gl_jPanelTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_jPanelTitle.createSequentialGroup()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -418,7 +429,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jPanelReceiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jPanelMsgTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jTextFieldSender))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jPanelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -465,7 +476,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(32, 32, 32)
-                                    .addComponent(jPanelMsgTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -498,13 +509,13 @@ public class ReadMailDialog extends javax.swing.JDialog {
         }
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
-        doClose(RET_CANCEL);
+        doClose(RETURN_CANCEL);
     }
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         System.gc();
         
-        String path = "database/rec_mails/" + this.user + "/" + title;
+        String path = "database/rec_mails/" + user + "/" + title;
         System.out.println("Mail to remove: " + path);
         
         // usuwanie plików i folderu z mailem
@@ -513,7 +524,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
         
         for (String one : files)
         {
-            File file = new File("database/rec_mails/" + this.user + "/" + title + "/" + one);
+            File file = new File("database/rec_mails/" + user + "/" + title + "/" + one);
             file.delete();
             
             System.gc();
@@ -522,36 +533,36 @@ public class ReadMailDialog extends javax.swing.JDialog {
         System.gc();
         
         deletedMailName = title;
-        deletedMailIndex = this.index;
+        deletedMailIndex = index;
         
         /////////////////////////////////////////////
         // CODE OF ACKNOWLEDGE - DELETED MAIL
         /////////////////////////////////////////////
         
-        final JDialog del_ack = new JDialog();
-        del_ack.setTitle("Potwierdzenie");
-        del_ack.getContentPane().setLayout(null);
-        del_ack.setSize(240, 150);
+        final JDialog jDialogDeleteAck = new JDialog();
+        jDialogDeleteAck.setTitle("Potwierdzenie");
+        jDialogDeleteAck.getContentPane().setLayout(null);
+        jDialogDeleteAck.setSize(240, 150);
         
-        JLabel label_ack = new JLabel("Wiadomość została usunięta!");
-        JButton ok_button = new JButton("OK");
+        JLabel jLabelDeleteAck = new JLabel("Wiadomość została usunięta!");
+        JButton jButtonOk = new JButton("OK");
         
-        label_ack.setLocation(40, 20);
-        label_ack.setSize(300, 20);
+        jLabelDeleteAck.setLocation(40, 20);
+        jLabelDeleteAck.setSize(300, 20);
         
-        ok_button.setLocation(90, 75);
-        ok_button.setSize(60, 30);
+        jButtonOk.setLocation(90, 75);
+        jButtonOk.setSize(60, 30);
         
-        del_ack.getContentPane().add(label_ack);
-        del_ack.getContentPane().add(ok_button);
+        jDialogDeleteAck.getContentPane().add(jLabelDeleteAck);
+        jDialogDeleteAck.getContentPane().add(jButtonOk);
         
-        ok_button.addActionListener(new ActionListener() {
+        jButtonOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                del_ack.dispose();
-                del_ack.setVisible(false);
+                jDialogDeleteAck.dispose();
+                jDialogDeleteAck.setVisible(false);
                 
-                doClose(RET_CANCEL);
+                doClose(RETURN_CANCEL);
             }
         });
         
@@ -559,15 +570,15 @@ public class ReadMailDialog extends javax.swing.JDialog {
         int w = (int)screenSize.getWidth();
         int h = (int)screenSize.getHeight();
         
-        Dimension dialogAckSize = del_ack.getSize();
+        Dimension dialogAckSize = jDialogDeleteAck.getSize();
         int x = (int)dialogAckSize.getWidth();
         int y = (int)dialogAckSize.getHeight();
         
-        del_ack.setLocation((w/2)-(x/2), (h/2)-(y/2));
+        jDialogDeleteAck.setLocation((w/2)-(x/2), (h/2)-(y/2));
         
-        del_ack.setResizable(false);
-        del_ack.setModal(true);
-        del_ack.setVisible(true);
+        jDialogDeleteAck.setResizable(false);
+        jDialogDeleteAck.setModal(true);
+        jDialogDeleteAck.setVisible(true);
     }
 
     private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {
@@ -587,7 +598,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
     }
     
     private void closeDialog(java.awt.event.WindowEvent evt) {
-        doClose(RET_CANCEL);
+        doClose(RETURN_CANCEL);
     }
     
     private void doClose(int retStatus) {
@@ -596,15 +607,6 @@ public class ReadMailDialog extends javax.swing.JDialog {
         dispose();
     }
     
-    public int getDeletedMailIndex()
-    {
-        int tmp =  deletedMailIndex;
-        deletedMailName = "";
-        deletedMailIndex = -1;
-        
-        return tmp;
-    }
-
 
     public static void main(String args[]) {
         try {
@@ -669,7 +671,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private javax.swing.JList jListAtts;
     private javax.swing.JPanel jPanelMsgContent;
     private javax.swing.JPanel jPanelTop;
-    private javax.swing.JPanel jPanelMsgTitle;
+    private javax.swing.JPanel jPanelTitle;
     private javax.swing.JPanel jPanelAttachments;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanelReceiver;
@@ -684,5 +686,5 @@ public class ReadMailDialog extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldSender;
     private javax.swing.JTextField jTextFieldTitle;
 
-    private int returnStatus = RET_CANCEL;
+    private int returnStatus = RETURN_CANCEL;
 }

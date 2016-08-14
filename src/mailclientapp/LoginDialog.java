@@ -30,10 +30,9 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
 
     private static final long serialVersionUID = 1L;
     
-    /** A return status code - returned if Cancel button has been pressed */
-    public static String RET_CANCEL = "0";
-    /** A return status code - returned if OK button has been pressed */
-    public static String RET_OK = "";
+    // A return status code - returned RET_CANCEL if Cancel button has been pressed
+    public static final String RETURN_CANCEL = "0";
+    public static String RETURN_OK = "";
     
     private String returnStatus = "RET_CANCEL";
     
@@ -63,19 +62,58 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
             private static final long serialVersionUID = 1L;
             @Override
             public void actionPerformed(ActionEvent e) {
-                doClose(RET_CANCEL);
+                doClose(RETURN_CANCEL);
             }
         });
     }
 
-    public String getReturnStatus() {
-        return returnStatus;
-    }
-    
     public void setWarning(String warn) {
         jLabelWarning.setText(warn);
     }
 
+    private void closeDialog(java.awt.event.WindowEvent evt) {
+        returnStatus = "RET_CANCEL";
+        doClose(RETURN_CANCEL);
+    }
+    
+    private void setReturnValue(String retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+    }
+    
+    public void doClose(String retStatus)
+    {
+        setVisible(false);
+    }
+    
+    public void showLoginDialog()
+    {
+        setVisible(true);
+    }
+    
+    public void resetReturnStatus()
+    {
+        returnStatus = "";
+    }
+            
+    public int getServerPort()
+    {
+        int p = Integer.parseInt(jTextFieldServerPort.getText());
+        
+        return p; 
+    }
+    
+    public String getServerIP()
+    {
+        String ip = jTextFieldServerIP.getText();
+        
+        return ip;
+    }
+    
+    public String getReturnStatus() {
+        return returnStatus;
+    }
+    
     private void initComponents() {
         jButtonOk = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -99,14 +137,14 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         jButtonOk.setText("Zaloguj");
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonOkActionPerformed(evt);
+                jButtonOkActionPerformed(evt);
             }
         });
 
         jButtonCancel.setText("Anuluj");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCancelActionPerformed(evt);
+                jButtonCancelActionPerformed(evt);
             }
         });
 
@@ -211,46 +249,29 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         pack();
     }
 
-    private void buttonOkActionPerformed(java.awt.event.ActionEvent evt) {
+    
+    
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {
         String login = jTextFieldLogin.getText();
         String password = jTextFieldPassword.getText();
         
-        RET_OK += login;
-        RET_OK += "|";
-        RET_OK += password;
+        RETURN_OK += login;
+        RETURN_OK += "|";
+        RETURN_OK += password;
               
-        System.out.println("Ret_OK " + RET_OK);
+        System.out.println("RETURN_OK " + RETURN_OK);
         
-        returnValue(RET_OK);
+        setReturnValue(RETURN_OK);
 
-        RET_OK = "";
+        RETURN_OK = "";
     }
 
-    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
         returnStatus = "RET_CANCEL";        
-        doClose(RET_CANCEL);
+        doClose(RETURN_CANCEL);
     }
 
-    private void closeDialog(java.awt.event.WindowEvent evt) {
-        returnStatus = "RET_CANCEL";
-        doClose(RET_CANCEL);
-    }
     
-    // ustawienie zwracanej wartości po zamknięciu okna logowania
-    private void returnValue(String retStatus) {
-        returnStatus = retStatus;
-        setVisible(false);
-    }
-    
-    public void doClose(String retStatus)
-    {
-        setVisible(false);
-    }
-    
-    public void showLoginDialog()
-    {
-        setVisible(true);
-    }
 
 
     @Override
@@ -275,27 +296,6 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
             }
         });
         setVisible(true);
-    }
-
-    public void reset()
-    {
-        returnStatus = "";
-    }
-            
-    // pobierz z pola tekstowego port serwera, do którego chce połączyć się klient poczty
-    public int getServerPort()
-    {
-        int p = Integer.parseInt(jTextFieldServerPort.getText());
-        
-        return p; 
-    }
-    
-    // pobierz z pola tekstowego IP serwera, do którego chce połączyć się klient poczty
-    public String getServerIP()
-    {
-        String ip = jTextFieldServerIP.getText();
-        
-        return ip;
     }
             
 

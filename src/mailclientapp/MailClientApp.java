@@ -66,22 +66,18 @@ public class MailClientApp extends javax.swing.JFrame {
     // OBJECTS AND FLAGS //
     ///////////////////////
     
-    // informations
     private int port;
     private static String user = "";
     
-    // client socket
     private Socket clientSocket;
     
     // object of our mail protocol
     private static MailProtocol mailProtocol;
     
-    // object of the login window
     private static LoginDialog loginDialog;
     private InfoDialog infoDialog;
     private SettingsDialog settingsDialog;
-    
-    // input/output buffors    
+      
     private static BufferedInputStream reader;
     private static ObjectInputStream objectReader;
     
@@ -91,7 +87,6 @@ public class MailClientApp extends javax.swing.JFrame {
     // object of the mail's message frame
     private static Map<String, Object> mailFrame = new HashMap<>();
     
-    // objects of the mail lists ect.
     private List<Object> mailsList = new ArrayList<>();
     
     private DefaultListModel recModel = new DefaultListModel();        // records collection in the GUI mails list
@@ -1363,7 +1358,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
                                 loginDialog.setWarning("Zły login lub hasło");
                                 loginDialog.setVisible(true);
-                                loginDialog.reset();
+                                loginDialog.resetReturnStatus();
                             }
 
                         } catch (IOException | ClassNotFoundException ex) {

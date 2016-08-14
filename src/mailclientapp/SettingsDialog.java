@@ -29,7 +29,7 @@ public class SettingsDialog extends javax.swing.JDialog {
     
     public SettingsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        System.out.println("SettingsDialog initialized");
+        System.out.println("Settings Dialog initialized");
         initComponents();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

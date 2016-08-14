@@ -25,9 +25,8 @@ import javax.swing.KeyStroke;
  */
 public class WriteMailDialog extends javax.swing.JDialog {
 
-	// A return status code - returned if Cancel button has been pressed
+	// A return status code - returned RET_CANCEL if Cancel button has been pressed
     public static final int RET_CANCEL = 0;
-    // A return status code - returned if OK button has been pressed
     public static final int RET_OK = 1;
     
     private String user;
@@ -48,7 +47,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
         mailData = new HashMap<>();
         initComponents();
 
-        // Close the dialog when Esc is pressed
+        // Close the dialog when Esc key is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
@@ -61,22 +60,21 @@ public class WriteMailDialog extends javax.swing.JDialog {
         });
     }
     
-   public String getReceiver()
+    public String getReceiver()
     {
         return this.receiver;
     }
    
-   public String getMsgTitle()
+   	public String getMsgTitle()
     {
         return this.title;
     }
    
-   public String getMsgText()
+   	public String getMsgText()
     {
         return this.text;
     }
     
-    // return the return status of this dialog - one of RET_OK or RET_CANCEL
     public int getReturnStatus() {
         return returnStatus;
     }
@@ -90,11 +88,11 @@ public class WriteMailDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButtonCancel = new javax.swing.JButton();
-        jPanelTextField = new javax.swing.JPanel();
+        jPanelMsgContent = new javax.swing.JPanel();
         jScrollPane = new javax.swing.JScrollPane();
         jTextAreaText = new javax.swing.JTextArea();
-        jPanel2 = new javax.swing.JPanel();
-        jPanelTitleText = new javax.swing.JPanel();
+        jPanelMain = new javax.swing.JPanel();
+        jPanelTitle = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextFieldTitle = new javax.swing.JTextField();
         jPanelAttachments = new javax.swing.JPanel();
@@ -107,7 +105,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
         jLabelTitle = new javax.swing.JLabel();
         jLabelReceiver = new javax.swing.JLabel();
         jButtonSend = new javax.swing.JButton();
-        jPanelReceiverText = new javax.swing.JPanel();
+        jPanelReceiver = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextFieldReceiver = new javax.swing.JTextField();
 
@@ -132,39 +130,39 @@ public class WriteMailDialog extends javax.swing.JDialog {
         jTextAreaText.setRows(5);
         jScrollPane.setViewportView(jTextAreaText);
 
-        javax.swing.GroupLayout gl_jPanelTextField = new javax.swing.GroupLayout(jPanelTextField);
-        jPanelTextField.setLayout(gl_jPanelTextField);
-        gl_jPanelTextField.setHorizontalGroup(
-            gl_jPanelTextField.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelMsgContent = new javax.swing.GroupLayout(jPanelMsgContent);
+        jPanelMsgContent.setLayout(gl_jPanelMsgContent);
+        gl_jPanelMsgContent.setHorizontalGroup(
+            gl_jPanelMsgContent.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        gl_jPanelTextField.setVerticalGroup(
-            gl_jPanelTextField.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        gl_jPanelMsgContent.setVerticalGroup(
+            gl_jPanelMsgContent.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelMain = new javax.swing.GroupLayout(jPanelMain);
+        jPanelMain.setLayout(gl_jPanelMain);
+        gl_jPanelMain.setHorizontalGroup(
+            gl_jPanelMain.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        gl_jPanelMain.setVerticalGroup(
+            gl_jPanelMain.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 115, Short.MAX_VALUE)
         );
 
         jScrollPane4.setViewportView(jTextFieldTitle);
 
-        javax.swing.GroupLayout gl_jPanelTitleText = new javax.swing.GroupLayout(jPanelTitleText);
-        jPanelTitleText.setLayout(gl_jPanelTitleText);
-        gl_jPanelTitleText.setHorizontalGroup(
-            gl_jPanelTitleText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelTitle = new javax.swing.GroupLayout(jPanelTitle);
+        jPanelTitle.setLayout(gl_jPanelTitle);
+        gl_jPanelTitle.setHorizontalGroup(
+            gl_jPanelTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        gl_jPanelTitleText.setVerticalGroup(
-            gl_jPanelTitleText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gl_jPanelTitleText.createSequentialGroup()
+        gl_jPanelTitle.setVerticalGroup(
+            gl_jPanelTitle.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_jPanelTitle.createSequentialGroup()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -242,14 +240,14 @@ public class WriteMailDialog extends javax.swing.JDialog {
 
         jScrollPane3.setViewportView(jTextFieldReceiver);
 
-        javax.swing.GroupLayout gl_jPanelReceiverText = new javax.swing.GroupLayout(jPanelReceiverText);
-        jPanelReceiverText.setLayout(gl_jPanelReceiverText);
-        gl_jPanelReceiverText.setHorizontalGroup(
-            gl_jPanelReceiverText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout gl_jPanelReceiver = new javax.swing.GroupLayout(jPanelReceiver);
+        jPanelReceiver.setLayout(gl_jPanelReceiver);
+        gl_jPanelReceiver.setHorizontalGroup(
+            gl_jPanelReceiver.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
         );
-        gl_jPanelReceiverText.setVerticalGroup(
-            gl_jPanelReceiverText.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        gl_jPanelReceiver.setVerticalGroup(
+            gl_jPanelReceiver.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
         );
 
@@ -265,7 +263,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
                             .addComponent(jPanelAttachments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addComponent(jPanelTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jPanelMsgContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(186, 186, 186)
                                 .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -284,10 +282,10 @@ public class WriteMailDialog extends javax.swing.JDialog {
                                 .addComponent(jLabelReceiver)
                                 .addGap(21, 21, 21)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelReceiverText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanelTitleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanelReceiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
@@ -295,22 +293,22 @@ public class WriteMailDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelReceiverText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanelReceiver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addComponent(jLabelReceiver)))
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelTitleText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelTitle))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelAttachments, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelMsgContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSend)
@@ -328,18 +326,17 @@ public class WriteMailDialog extends javax.swing.JDialog {
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {
         String receiver = jTextFieldReceiver.getText();
         String title = jTextFieldTitle.getText();
-        String mailTxt = jTextAreaText.getText();
+        String msgContent = jTextAreaText.getText();
         
-        if ( receiver.isEmpty() || title.isEmpty() ) {}
-        else 
+        if ( !receiver.isEmpty() && !title.isEmpty() )
         {
             mailData.put("receiver", receiver);
-            mailData.put("title", title);      
-            mailData.put("mail_txt", mailTxt);
+            mailData.put("title", title);
+            mailData.put("mail_txt", msgContent);
 
             System.out.println("Odbiorca wiadomości: " + receiver);
             System.out.println("Tytuł wiadomości: " + title);
-            System.out.println("Tekst wiadomości: " + mailTxt);
+            System.out.println("Tekst wiadomości: " + msgContent);
 
             Map<Integer, Map> tmpAttachments = new HashMap<>();
 
@@ -430,12 +427,12 @@ public class WriteMailDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLabelReceiver;
     private javax.swing.JList jListAtts;
-    private javax.swing.JPanel jPanelTextField;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanelTitleText;
+    private javax.swing.JPanel jPanelMsgContent;
+    private javax.swing.JPanel jPanelMain;
+    private javax.swing.JPanel jPanelTitle;
     private javax.swing.JPanel jPanelAttachments;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanelReceiverText;
+    private javax.swing.JPanel jPanelReceiver;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JScrollPane jScrollPane3;
