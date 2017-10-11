@@ -138,7 +138,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
                 File tmpFile = new File(path);
                 double size = Math.round( ((double)tmpFile.length() / 1024.0 / 1024.0) * 10.0) / 10.0;
                 
-                String fullName = path + "  (rozmiar: " + size + " MB)"; 
+                String fullName = path + "  (size: " + size + " MB)"; 
                 
                 defaultListModel.add(0, fullName); 
             }
@@ -285,10 +285,6 @@ public class ReadMailDialog extends javax.swing.JDialog {
                     int firstIndex = e.getFirstIndex();
                     int lastIndex = e.getLastIndex();
                     boolean isAdjusting = e.getValueIsAdjusting();
-                    System.out.println("Event for indexes "
-                        + firstIndex + " - " + lastIndex
-                        + "; isAdjusting is " + isAdjusting
-                        + "; selected indexes:");
 
                     if (lsm.isSelectionEmpty()) {
                         System.out.println(" <none>");
@@ -301,8 +297,6 @@ public class ReadMailDialog extends javax.swing.JDialog {
                                 System.out.println(" " + i);
 
                                 String x = attachments.get(i).toString();
-
-                                System.out.println("Component name: " + x);
 
                                 jListAttachments.clearSelection();
 
@@ -331,9 +325,9 @@ public class ReadMailDialog extends javax.swing.JDialog {
                     .addGap(0, 0, Short.MAX_VALUE))
             );
 
-            jLabel1.setText("Załączniki:");
+            jLabel1.setText("Attachments:");
 
-            jButtonBrowse.setText("Przeglądaj");
+            jButtonBrowse.setText("Browse");
             jButtonBrowse.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jButtonBrowseActionPerformed(evt);
@@ -369,8 +363,8 @@ public class ReadMailDialog extends javax.swing.JDialog {
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
-            jLabelTitle.setText("Tytuł wiadomości:");
-            jLabelReceiver.setText("Odbiorca wiadomości:");
+            jLabelTitle.setText("Message title:");
+            jLabelReceiver.setText("Message receiver:");
 
             jScrollPane3.setViewportView(jTextFieldReceiver);
             jTextFieldReceiver.setDisabledTextColor(Color.BLACK);
@@ -386,19 +380,19 @@ public class ReadMailDialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
             );
 
-            jLabelSender.setText("Nadawca wiadomości:");
+            jLabelSender.setText("Message sender:");
 
-            jButtonDelete.setText("Usuń wiadomość");
+            jButtonDelete.setText("Remove message");
             jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jButtonDeleteActionPerformed(evt);
                 }
             });
 
-            jLabelDate.setText("Data odebrania:");
-            jLabelMsgText.setText("Treść wiadomości:");
-            jButtonSendFurther.setText("Prześlij dalej");
-            jButtonAnswer.setText("Odpowiedz");
+            jLabelDate.setText("Receive date:");
+            jLabelMsgText.setText("Message content:");
+            jButtonSendFurther.setText("Send further");
+            jButtonAnswer.setText("Respond");
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -499,7 +493,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
             
             if (type.equals("sent"))
             {
-            	jLabelDate.setText("Data wysłania:");
+            	jLabelDate.setText(StaticNames.SENT_DATE);
             }
             
             pack();
@@ -549,11 +543,11 @@ public class ReadMailDialog extends javax.swing.JDialog {
         /////////////////////////////////////////////
         
         final JDialog jDialogDeleteAck = new JDialog();
-        jDialogDeleteAck.setTitle("Potwierdzenie");
+        jDialogDeleteAck.setTitle("Acknowledgement");
         jDialogDeleteAck.getContentPane().setLayout(null);
         jDialogDeleteAck.setSize(240, 150);
         
-        JLabel jLabelDeleteAck = new JLabel("Wiadomość została usunięta!");
+        JLabel jLabelDeleteAck = new JLabel("Message has been removed!");
         JButton jButtonOk = new JButton("OK");
         
         jLabelDeleteAck.setLocation(40, 20);
@@ -599,7 +593,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
             String absPath = file.getAbsolutePath();
             double fileSize = Math.round( ((double)file.length() / 1024.0 / 1024.0) * 10.0) / 10.0;
 
-            String all = absPath + "  (rozmiar: " + fileSize + " MB)";
+            String all = absPath + "  (size: " + fileSize + " MB)";
 
             attachments.add(absPath);
             defaultListModel.add(0, all);

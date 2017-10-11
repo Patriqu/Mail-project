@@ -262,8 +262,8 @@ public class MailClientApp extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButtonWriteMail.setText("Napisz E-mail");
-        jButtonWriteMail.setToolTipText("Otwiera ekran pisania wiadomości e-mail");
+        jButtonWriteMail.setText("Write E-Mail");
+        jButtonWriteMail.setToolTipText("Opens the screen when you can write the new e-mail message");
         jButtonWriteMail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButtonWriteMailMouseClicked(evt);
@@ -275,32 +275,32 @@ public class MailClientApp extends javax.swing.JFrame {
             }
         });
 
-        jButtonReceivedMails.setText("Odebrane wiadomości");
-        jButtonReceivedMails.setToolTipText("Lista odebranych przez użytkownika wiadomości");
+        jButtonReceivedMails.setText("Received Messages");
+        jButtonReceivedMails.setToolTipText("A list of received messages by the user");
         jButtonReceivedMails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRecMailsActionPerformed(evt);
             }
         });
 
-        jButtonTrashMails.setText("Kosz");
-        jButtonTrashMails.setToolTipText("Lista wyrzuconych do kosza wiadomości");
+        jButtonTrashMails.setText("Trash");
+        jButtonTrashMails.setToolTipText("A list of messages dropped to trash");
         jButtonTrashMails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonTrashMailsActionPerformed(evt);
             }
         });
 
-        jButtonSendMails.setText("Wysłane wiadomości");
-        jButtonSendMails.setToolTipText("Lista wysłanych przez użytkownika wiadomości");
+        jButtonSendMails.setText("Sent Messages");
+        jButtonSendMails.setToolTipText("A list of sent messages by the user");
         jButtonSendMails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSendMailsActionPerformed(evt);
             }
         });
 
-        jButtonLogout.setText("Wyloguj");
-        jButtonLogout.setToolTipText("Kliknij aby się wylogować z konta");
+        jButtonLogout.setText("Logout");
+        jButtonLogout.setToolTipText("Click to logout");
         jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLogoutActionPerformed(evt);
@@ -356,10 +356,6 @@ public class MailClientApp extends javax.swing.JFrame {
                     int firstIndex = e.getFirstIndex();
                     int lastIndex = e.getLastIndex();
                     boolean isAdjusting = e.getValueIsAdjusting();
-                    System.out.println("Event for indexes "
-                        + firstIndex + " - " + lastIndex
-                        + "; isAdjusting is " + isAdjusting
-                        + "; selected indexes:");
 
                     if (lsm.isSelectionEmpty()) {
                         System.out.println(" <none>");
@@ -389,10 +385,10 @@ public class MailClientApp extends javax.swing.JFrame {
 
                                             if (name != -1)
                                             {
-                                                System.out.println("Usuwanie z listy odebranych maila: " + name);
+                                                System.out.println("Removing mail from received list: " + name);
 
                                                 String temp[] = (String[]) recModel.elementAt(name);
-                                                System.out.println("Folder do usunięcia: " + temp[2]);
+                                                System.out.println("Folder to remove: " + temp[2]);
 
                                                 recModel.removeElementAt(name);
                                             }
@@ -411,12 +407,12 @@ public class MailClientApp extends javax.swing.JFrame {
                 }
             });
 
-            jLabelMsgTitle.setText("Tytuł Wiadomości");
-            jLabelMsgDate.setText("Data Odebrania");
-            jLabelMsgSender.setText("Nadawca");
-            jButtonAddToTrash.setText("Dodaj do kosza");
-            jButtonDeleteMsg.setText("Usuń wiadomości");
-            jButtonSetAsRead.setText("Oznacz jako przeczytane");
+            jLabelMsgTitle.setText("Message title");
+            jLabelMsgDate.setText("Receive date");
+            jLabelMsgSender.setText("Sender");
+            jButtonAddToTrash.setText("Add to trash");
+            jButtonDeleteMsg.setText("Remove messages");
+            jButtonSetAsRead.setText("Mark as read");
 
             javax.swing.GroupLayout gl_jMainPanel = new javax.swing.GroupLayout(jMainPanel);
             jMainPanel.setLayout(gl_jMainPanel);
@@ -478,7 +474,7 @@ public class MailClientApp extends javax.swing.JFrame {
             });
 
             jMenuItemRec.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemRec.setText("Odebrane wiadomości");
+            jMenuItemRec.setText("Received messages");
             jMenuItemRec.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemRecActionPerformed(evt);
@@ -487,7 +483,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jMenuItemRec);
 
             jMenuItemSentMails.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemSentMails.setText("Wysłane wiadomości");
+            jMenuItemSentMails.setText("Sent messages");
             jMenuItemSentMails.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemSentMailsActionPerformed(evt);
@@ -496,7 +492,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jMenuItemSentMails);
 
             jMenuItemTrash.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemTrash.setText("Kosz");
+            jMenuItemTrash.setText("Trash");
             jMenuItemTrash.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemTrashActionPerformed(evt);
@@ -505,7 +501,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jMenuItemTrash);
 
             jMenuItemWriteMail.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemWriteMail.setText("Napisz e-mail");
+            jMenuItemWriteMail.setText("Write an e-mail");
             jMenuItemWriteMail.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemWriteMailActionPerformed(evt);
@@ -515,7 +511,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jSeparator1);
 
             jMenuItemSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemSettings.setText("Ustawienia programu");
+            jMenuItemSettings.setText("Settings");
             jMenuItemSettings.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemSettingsActionPerformed(evt);
@@ -524,7 +520,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jMenuItemSettings);
 
             jMenuItemInfo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemInfo.setText("Informacje");
+            jMenuItemInfo.setText("Informations");
             jMenuItemInfo.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemInfoActionPerformed(evt);
@@ -533,7 +529,7 @@ public class MailClientApp extends javax.swing.JFrame {
             jMenuWriteMail.add(jMenuItemInfo);
 
             jMenuItemLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-            jMenuItemLogout.setText("Wyloguj");
+            jMenuItemLogout.setText("Logout");
             jMenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenuItemLogoutActionPerformed(evt);
@@ -573,7 +569,7 @@ public class MailClientApp extends javax.swing.JFrame {
             
             setLocation((w/2)-(x/2), (h/2)-(y/2));
             setResizable(false);
-            setTitle("Klient poczty E-mail");
+            setTitle("E-mail client");
         }
 
     private void removeMail(String name)
@@ -589,8 +585,6 @@ public class MailClientApp extends javax.swing.JFrame {
         for (String one : files)
         {
             File file = new File(basePath + user + "/" + name + "/" + one);
-            
-            System.out.println("One: " + one);
             file.delete();
         }
         dir.delete();
@@ -606,7 +600,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
                 if (writeMail.getReturnStatus() == 0)
                 {
-                    System.out.println("Closing writing message window");
+                    System.out.println("Closing the write message window");
                 }
                 else {
                     //// COMPOSING MAIL FRAME TO BE SENT TO RECEIVER CLIENT
@@ -626,19 +620,15 @@ public class MailClientApp extends javax.swing.JFrame {
                     try {
                         mailsList.set(0, comm);
                         mailsList.set(1, null);
-                        
-                        System.out.println("List element 0: " + mailsList.get(0));
-                        System.out.println("List element 1: " + mailsList.get(1));
-                        
                         sendCommand();
                     } catch (IOException ex) {
                         Logger.getLogger(MailClientApp.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
-                    //// UTWORZENIE PLIKU Z MAILEM W KATALOGU WYSŁANYCH
+                    //// CREATE FILE WITH MAIL IN MAIN DIRECTORY
                     saveMailToXML("sent", data);
                     
-                    //// DODANIE DO LISTY GUI WYSŁANYCH MAILI
+                    //// ADD TO THE GUI LIST OF SENT MAILS
                     
                     String tmp_table[] = new String[4];
                     
@@ -662,7 +652,7 @@ public class MailClientApp extends javax.swing.JFrame {
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // sending "BYE" to server
+            // sending "BYE" command to server
             mailsList.set(0, "BYE");
             mailsList.set(1, null);
             
@@ -792,7 +782,7 @@ public class MailClientApp extends javax.swing.JFrame {
     {
        objectWriter.reset();
         
-       System.out.println("Klient: " + mailsList.get(0));
+       System.out.println("Client: " + mailsList.get(0));
        
        objectWriter.writeObject(mailsList);
        objectWriter.flush();
@@ -974,7 +964,7 @@ public class MailClientApp extends javax.swing.JFrame {
     {
         final MailClientApp client = t_client;
                 
-        // dialog logowania
+        // login dialog
         loginDialog = new LoginDialog(new JFrame(), true);
         loginDialog.setVisible(true);
         final int port = loginDialog.getServerPort();
@@ -1042,7 +1032,7 @@ public class MailClientApp extends javax.swing.JFrame {
                             {
                                 loginDialog.doClose("OK");
                                 user = login;
-                                jLabelWelcome.setText("Zalogowano jako: " + login);
+                                jLabelWelcome.setText("Logged as: " + login);
 
                                 try {
                                     // listing files in console
@@ -1090,7 +1080,7 @@ public class MailClientApp extends javax.swing.JFrame {
                                 client.disconnect();
                                 client.isNotConnected = true;
 
-                                loginDialog.setWarning("Zły login lub hasło");
+                                loginDialog.setWarning("Bad login or password");
                                 loginDialog.setVisible(true);
                                 loginDialog.resetReturnStatus();
                             }
@@ -1104,7 +1094,7 @@ public class MailClientApp extends javax.swing.JFrame {
                         client.disconnect();
                         client.isNotConnected = true;
 
-                        loginDialog.setWarning("Serwer jest niedostępny!");
+                        loginDialog.setWarning("Server is unavailable!");
                         loginDialog.setVisible(true);
                     }
                 }
@@ -1160,9 +1150,6 @@ public class MailClientApp extends javax.swing.JFrame {
             }   
             
             for (String name : files) {
-                System.out.println("one: " + one);
-                System.out.println("name: " + name);
-
                 if (name.contains(".xml"))
                 {
                     int x = name.lastIndexOf(".xml");
@@ -1180,7 +1167,6 @@ public class MailClientApp extends javax.swing.JFrame {
                     }
 
                     Date date = sdf.parse(created.substring(0, 19));
-                    System.out.println("After parsing and to date: " + date.toString());
                     String tmpTable[] = new String[4];
                     tmpTable[0] = temp_t;
                     tmpTable[1] = print.format(sdf.parse(created));
@@ -1204,7 +1190,7 @@ public class MailClientApp extends javax.swing.JFrame {
         
         sortMailsByDate(mailsQueue, print);
         
-        // ADD TO SHOW ON GUI
+        // SHOW ON GUI
         switch (type) {
         	case "received":
         		
@@ -1235,10 +1221,7 @@ public class MailClientApp extends javax.swing.JFrame {
 	            
 	            String now = mailsQueue.get(j)[1];
 	            String next = mailsQueue.get(j+1)[1];
-	            
-	            System.out.println("Now: " + now);
-	            System.out.println("Next: " + next);
-	            
+
 	            try {
 	                d1 = datePrint.parse(now);
 	                d2 = datePrint.parse(next);
@@ -1274,24 +1257,24 @@ public class MailClientApp extends javax.swing.JFrame {
     {
         switch (type) {
             case "received_mails":
-                jLabelMsgDate.setText("Data odebrania");
-                jLabelMsgSender.setText("Nadawca");
+                jLabelMsgDate.setText("Receive date");
+                jLabelMsgSender.setText("Sender");
                 
                 listType = "rec";
                 jListMails.setModel(recModel);
                 break;
                 
             case "sent_mails":
-                jLabelMsgDate.setText("Data wysłania");
-                jLabelMsgSender.setText("Odbiorca");
+                jLabelMsgDate.setText("Sent date");
+                jLabelMsgSender.setText("Receiver");
                 
                 listType = "sent";
                 jListMails.setModel(sentModel);
                 break;
                 
             case "trash":
-                jLabelMsgDate.setText("Data odebrania");
-                jLabelMsgSender.setText("Nadawca");
+                jLabelMsgDate.setText("Receive date");
+                jLabelMsgSender.setText("Sender");
                 
                 listType = "trash";
                 jListMails.setModel(trashModel);

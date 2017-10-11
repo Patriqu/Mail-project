@@ -128,27 +128,27 @@ public class SettingsDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabelDefaultServerPort.setText("Domyślny port serwera:");
-        jLabelDefaultServerIP.setText("Domyślny adres IP serwera:");
-        jLabelWindowLayout.setText("Wygląd okien:");
-        jLabelFontSize.setText("Wielkość czcionki tekstowej:");
-        jLabelMailsFolder.setText("Folder przechowywanych listów:");
+        jLabelDefaultServerPort.setText("Default server port:");
+        jLabelDefaultServerIP.setText("default server IP address:");
+        jLabelWindowLayout.setText("Windows style:");
+        jLabelFontSize.setText("Font size:");
+        jLabelMailsFolder.setText("Mails store directory:");
 
-        jButtonSaveSettings.setText("Zapisz ustawienia");
+        jButtonSaveSettings.setText("Save settings");
         jButtonSaveSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSaveSettingsActionPerformed(evt);
             }
         });
 
-        jButtonCancel.setText("Anuluj");
+        jButtonCancel.setText("Cancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);
             }
         });
 
-        jComboBoxWindowStyle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Domyślny", "Metal" }));
+        jComboBoxWindowStyle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default", "Metal" }));
 
         javax.swing.GroupLayout gl_jPanelMain = new javax.swing.GroupLayout(jPanelMain);
         jPanelMain.setLayout(gl_jPanelMain);
@@ -254,7 +254,7 @@ public class SettingsDialog extends javax.swing.JDialog {
         setLocation((w/2)-(x/2), (h/2)-(y/2));
         toFront();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Ustawienia programu");
+        setTitle("Application settings");
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

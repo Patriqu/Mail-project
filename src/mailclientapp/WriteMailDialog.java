@@ -107,7 +107,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
             }
         });
 
-        jButtonCancel.setText("Anuluj");
+        jButtonCancel.setText("Cancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);
@@ -155,7 +155,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jButtonBrowse.setText("Przeglądaj");
+        jButtonBrowse.setText("Browse");
         jButtonBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBrowseActionPerformed(evt);
@@ -184,7 +184,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("Załączniki:");
+        jLabel1.setText("Attachments:");
 
         javax.swing.GroupLayout gl_jPanelAttachments = new javax.swing.GroupLayout(jPanelAttachments);
         jPanelAttachments.setLayout(gl_jPanelAttachments);
@@ -215,11 +215,11 @@ public class WriteMailDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabelTitle.setText("Tytuł wiadomości:");
+        jLabelTitle.setText("Message title:");
 
-        jLabelReceiver.setText("Odbiorca wiadomości:");
+        jLabelReceiver.setText("Message receiver:");
 
-        jButtonSend.setText("Wyślij");
+        jButtonSend.setText("Send");
         jButtonSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSendActionPerformed(evt);
@@ -334,10 +334,6 @@ public class WriteMailDialog extends javax.swing.JDialog {
             mailData.put("title", title);
             mailData.put("mail_txt", msgContent);
 
-            System.out.println("Odbiorca wiadomości: " + receiver);
-            System.out.println("Tytuł wiadomości: " + title);
-            System.out.println("Tekst wiadomości: " + msgContent);
-
             Map<Integer, Map> tmpAttachments = new HashMap<>();
 
             for (int i = 0; i < defaultListModel.getSize(); i++)
@@ -369,7 +365,7 @@ public class WriteMailDialog extends javax.swing.JDialog {
             String absPath = file.getAbsolutePath();
             double fileSize = Math.round( ((double)file.length() / 1024.0 / 1024.0) * 10.0) / 10.0; 
 
-            String all = absPath + "  (rozmiar: " + fileSize + " MB)";
+            String all = absPath + "  (size: " + fileSize + " MB)";
 
             attachments.add(absPath);
             defaultListModel.add(0, all);

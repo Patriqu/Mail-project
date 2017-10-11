@@ -40,8 +40,8 @@ public class InfoDialog extends javax.swing.JDialog {
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
-        jLabelInfo.setText("<html>Aplikacja stworzona przez Patryka Siudę z " +
-            "pomocą Marcina Stracha.<br>(C) 2015.</html>");
+        jLabelInfo.setText("<html>Application created by Patryka Siuda with " +
+            "a little help of Marcin Strach.<br>(C) 2015.</html>");
 
         pack();
         
@@ -56,7 +56,7 @@ public class InfoDialog extends javax.swing.JDialog {
         setLocation((w/2)-(x/2), (h/2)-(y/2));
         toFront();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Informacje o aplikacji");
+        setTitle("About application");
         
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

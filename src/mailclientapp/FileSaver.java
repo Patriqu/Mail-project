@@ -69,8 +69,8 @@ public class FileSaver extends javax.swing.JDialog {
 
         pack();
         
-        jFileChooser.setApproveButtonText("Zapisz plik");
-        jFileChooser.setDialogTitle("Zapisz plik");
+        jFileChooser.setApproveButtonText(StaticNames.SAVE_FILE);
+        jFileChooser.setDialogTitle(StaticNames.SAVE_FILE);
         jFileChooser.setSelectedFile(new File(filePath));
         setVisible(true);
     }
@@ -80,8 +80,8 @@ public class FileSaver extends javax.swing.JDialog {
         {
             String copyPath = jFileChooser.getSelectedFile().getAbsolutePath();
             
-            System.out.println("Ścieżka źródłowa pliku załącznika: " + filePath);
-            System.out.println("Ścieżka kopiowania pliku załącznika: " + copyPath);
+            System.out.println("Attachment source path: " + filePath);
+            System.out.println("Attachment copy path: " + copyPath);
             
             try {
                 FileInputStream fis = new FileInputStream(filePath);

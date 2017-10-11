@@ -108,14 +108,14 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
             }
         });
 
-        jButtonOk.setText("Zaloguj");
+        jButtonOk.setText("Log-in");
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOkActionPerformed(evt);
             }
         });
 
-        jButtonCancel.setText("Anuluj");
+        jButtonCancel.setText("Cancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);
@@ -123,9 +123,9 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         });
 
         jLabelLogin.setText("Login:");
-        jLabelInfo.setText("Podaj login, hasło, IP serwera oraz port.");
-        jLabelPassword.setText("Hasło:");
-        jLabelServerPort.setText("Port serwera:");
+        jLabelInfo.setText("Write login, password, server IP and port.");
+        jLabelPassword.setText("Password:");
+        jLabelServerPort.setText("Server port:");
 
         SAXBuilder saxBuilder = new SAXBuilder();
         File xml = new File("database/config.xml");
@@ -139,13 +139,10 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
 
             defaultPort = rootNode.getChild("default_server_port").getValue();
             defaultIP = rootNode.getChild("default_server_ip").getValue();
-
-            System.out.println("Plik konfiguracyjny - Domyślny port serwera: " + defaultPort);
-            System.out.println("Plik konfiguracyjny - Domyślne IP serwera: " + defaultIP);
         } catch (JDOMException | IOException e) {
         }
         jTextFieldServerPort.setText(defaultPort);
-        jLabelServerIP.setText("IP serwera:");
+        jLabelServerIP.setText("Server IP:");
         jTextFieldServerIP.setText(defaultIP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -245,7 +242,7 @@ public class LoginDialog extends javax.swing.JDialog implements Runnable {
         
         setLocation((w/2)-(x/2), (h/2)-(y/2));
         toFront();
-        setTitle("Logowanie");
+        setTitle("Logging");
     } 
     
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {
