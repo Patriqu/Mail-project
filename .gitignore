@@ -1,1 +1,5 @@
 /bin/
+/database/
+/.idea/
+*.iml
+*.project

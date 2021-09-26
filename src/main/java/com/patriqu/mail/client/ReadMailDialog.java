@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package mailclientapp;
+package com.patriqu.mail.client;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -493,7 +488,7 @@ public class ReadMailDialog extends javax.swing.JDialog {
             
             if (type.equals("sent"))
             {
-            	jLabelDate.setText(StaticNames.SENT_DATE);
+            	jLabelDate.setText("Send Date");
             }
             
             pack();

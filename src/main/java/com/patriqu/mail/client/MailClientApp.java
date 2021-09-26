@@ -1,4 +1,4 @@
-package mailclientapp;
+package com.patriqu.mail.client;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -781,7 +781,7 @@ public class MailClientApp extends javax.swing.JFrame {
     public void sendCommand() throws IOException
     {
        objectWriter.reset();
-        
+
        System.out.println("Client: " + mailsList.get(0));
        
        objectWriter.writeObject(mailsList);
@@ -805,7 +805,7 @@ public class MailClientApp extends javax.swing.JFrame {
             client.setMailFrame(client);
         }
         else if (response.equals("MAIL SUCCESS"))
-        {  
+        {
             Map<String, Object> map = (Map<String, Object>) frame.get(1);
             
             System.out.println(map.get("sender"));

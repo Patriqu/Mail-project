@@ -1,9 +1,8 @@
-package mailclientapp;
+package com.patriqu.mail.client;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import static java.lang.reflect.Array.set;
 import javax.swing.WindowConstants;
 
 

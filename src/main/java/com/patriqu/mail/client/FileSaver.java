@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package mailclientapp;
+package com.patriqu.mail.client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,8 +64,8 @@ public class FileSaver extends javax.swing.JDialog {
 
         pack();
         
-        jFileChooser.setApproveButtonText(StaticNames.SAVE_FILE);
-        jFileChooser.setDialogTitle(StaticNames.SAVE_FILE);
+        jFileChooser.setApproveButtonText("Save file");
+        jFileChooser.setDialogTitle("Save file");
         jFileChooser.setSelectedFile(new File(filePath));
         setVisible(true);
     }

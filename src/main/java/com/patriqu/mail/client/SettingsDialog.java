@@ -1,10 +1,9 @@
-package mailclientapp;
+package com.patriqu.mail.client;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
